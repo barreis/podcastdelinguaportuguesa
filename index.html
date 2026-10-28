@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vozes em Pauta — Oficina de Podcast | Língua Portuguesa</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Studio & School Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & Young Serif/Outfit for Editorial Studio feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        vinho: {
+                            50: '#FDF2F4',
+                            100: '#FCE7EB',
+                            600: '#8A1C34',
+                            700: '#6E1327',
+                            800: '#520B1B',
+                            900: '#3D000E',
+                        },
+                        marrom: {
+                            100: '#EFEAE6',
+                            300: '#C7B8AD',
+                            600: '#6B5244',
+                            700: '#543D32',
+                            800: '#3D2A20',
+                            900: '#281912',
+                        },
+                        creme: {
+                            50: '#FFFDF9',
+                            100: '#FDFBF7',
+                            200: '#F7F0E6',
+                            300: '#EFE3D3',
+                        },
+                        terracota: {
+                            500: '#D96B43',
+                            600: '#C0532B',
+                        },
+                        dourado: {
+                            400: '#F3C15A',
+                            500: '#E5AB35',
+                            600: '#C68E1B',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Lora', 'serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Acessibilidade & Tipografia Responsiva */
+        :root {
+            --font-scale: 1;
+        }
+        body {
+            font-size: calc(1rem * var(--font-scale));
+            background-color: #FDFBF7;
+            color: #3D2A20;
+            transition: font-size 0.2s ease, background-color 0.3s ease;
+        }
+        .bg-creme-pattern {
+            background-color: #FDFBF7;
+            background-image: radial-gradient(#EFE3D3 0.85px, transparent 0.85px);
+            background-size: 16px 16px;
+        }
+        .btn-vinho {
+            background-color: #6E1327;
+            color: #FFFDF9;
+            transition: all 0.2s ease;
+        }
+        .btn-vinho:hover {
+            background-color: #520B1B;
+            transform: translateY(-1px);
+        }
+        .card-studio {
+            border: 1px solid #EFE3D3;
+            box-shadow: 0 4px 20px -2px rgba(84, 61, 50, 0.08);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-studio:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px -4px rgba(110, 19, 39, 0.15);
+            border-color: #D96B43;
+        }
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F0E6;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #C7B8AD;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6E1327;
+        }
+        /* Visualizer Wave Animation */
+        .wave-bar {
+            transition: height 0.1s ease;
+        }
+    </style>
+</head>
+<body class="bg-creme-pattern min-h-screen flex flex-col font-sans antialiased text-marrom-800">
+
+    <!-- BARRA SUPERIOR DE ACESSIBILIDADE E GRUPO ATIVO -->
+    <header class="bg-marrom-900 text-creme-100 border-b-4 border-dourado-500 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            
+            <!-- Logotipo e Título Principal -->
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('home')">
+                <div class="w-10 h-10 rounded-full bg-vinho-700 border-2 border-dourado-400 flex items-center justify-center text-dourado-400 font-bold text-xl shadow-inner">
+                    <i class="fa-solid fa-microphone-lines"></i>
+                </div>
+                <div>
+                    <span class="font-display font-bold text-lg leading-tight tracking-wide block text-creme-50">VOZES EM PAUTA</span>
+                    <span class="text-xs text-dourado-400 block font-medium">Oficina de Podcast • Língua Portuguesa</span>
+                </div>
+            </div>
+
+            <!-- Controles de Acessibilidade + Login Info -->
+            <div class="flex items-center space-x-2 sm:space-x-4">
+                
+                <!-- Ajuste de Fonte -->
+                <div class="flex items-center bg-marrom-800 rounded-lg p-1 border border-marrom-700">
+                    <button onclick="changeFontSize(-0.1)" title="Diminuir texto" class="px-2 py-1 text-xs font-bold text-creme-200 hover:bg-marrom-700 rounded transition" aria-label="Diminuir fonte">-A</button>
+                    <button onclick="resetFontSize()" title="Tamanho normal" class="px-2 py-1 text-xs font-bold text-dourado-400 hover:bg-marrom-700 rounded transition" aria-label="Resetar fonte">A</button>
+                    <button onclick="changeFontSize(0.1)" title="Aumentar texto" class="px-2 py-1 text-xs font-bold text-creme-200 hover:bg-marrom-700 rounded transition" aria-label="Aumentar fonte">+A</button>
+                </div>
+
+                <!-- Status do Grupo / Login -->
+                <div id="user-status-container">
+                    <!-- Preenchido dinamicamente via JS -->
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MENUS DE NAVEGAÇÃO RÁPIDA (HABILITADOS APÓS LOGIN OU VISITANTE) -->
+    <nav class="bg-vinho-800 text-creme-100 shadow-md border-b border-vinho-900 hidden" id="main-nav-bar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center overflow-x-auto space-x-1 py-2 text-sm font-medium">
+            <button onclick="navigateTo('home')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-house mr-1.5"></i>Início</button>
+            <button onclick="navigateTo('roteiros')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-pen-nib mr-1.5"></i>Criar Roteiro</button>
+            <button onclick="navigateTo('estudio')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-microphone mr-1.5"></i>Estúdio</button>
+            <button onclick="navigateTo('biblioteca')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-folder-closed mr-1.5"></i>Meus Episódios</button>
+            <button onclick="navigateTo('vitrine')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-podcast mr-1.5"></i>Vitrine Pública</button>
+            <button onclick="navigateTo('revisao')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-clipboard-check mr-1.5"></i>Revisão & Avaliação</button>
+            <button onclick="navigateTo('guia')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-book-bookmark mr-1.5"></i>Guia da Oficina</button>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="app-viewport">
+        
+        <!-- SEÇÃO 1: TELA DE BOAS-VINDAS / MOTIVACIONAL (HOME) -->
+        <section id="sec-home" class="space-y-8 animate-fade-in">
+            
+            <!-- Banner Motivacional Assinado -->
+            <div class="bg-gradient-to-r from-vinho-800 via-vinho-700 to-marrom-800 text-creme-50 rounded-2xl p-6 sm:p-10 shadow-xl border-2 border-dourado-500/40 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-creme-100 text-9xl pointer-events-none">
+                    <i class="fa-solid fa-quote-right"></i>
+                </div>
+                <div class="max-w-3xl space-y-4 relative z-10">
+                    <span class="inline-block bg-dourado-500 text-marrom-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
+                        Mensagem da Professora
+                    </span>
+                    <h1 class="text-3xl sm:text-5xl font-display font-bold text-creme-50 leading-tight">
+                        SUA IDEIA MERECE SER OUVIDA
+                    </h1>
+                    <p class="text-lg sm:text-xl font-serif italic text-creme-200">
+                        "Transforme palavras em vozes. E vozes em histórias."
+                    </p>
+                    <p class="text-sm sm:text-base text-creme-100 leading-relaxed font-light">
+                        Planeje, escreva, grave e compartilhe seu podcast. Aqui, cada grupo tem espaço para experimentar, colaborar e descobrir o poder da comunicação e da linguagem falada.
+                    </p>
+                    <div class="pt-4 border-t border-vinho-600/60 flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-full bg-terracota-500 border-2 border-dourado-400 flex items-center justify-center font-bold text-xl text-creme-50 shadow-md">
+                            PBV
+                        </div>
+                        <div>
+                            <p class="font-bold text-creme-50 font-display text-base">Professora Bárbara Vitória</p>
+                            <p class="text-xs text-dourado-400">Língua Portuguesa • ✦ Aprender, criar, revisar e compartilhar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD DE AUTENTICAÇÃO DO GRUPO (Caso não esteja logado) -->
+            <div id="auth-box" class="bg-creme-100 border-2 border-marrom-300 rounded-2xl p-6 shadow-md max-w-xl mx-auto">
+                <div class="text-center mb-6">
+                    <div class="inline-flex items-center justify-center w-12 h-12 bg-vinho-100 text-vinho-700 rounded-full mb-2">
+                        <i class="fa-solid fa-users text-xl"></i>
+                    </div>
+                    <h2 class="text-2xl font-display font-bold text-marrom-900">Acesso das Equipes</h2>
+                    <p class="text-xs sm:text-sm text-marrom-600">Identifique o seu grupo para iniciar os trabalhos no estúdio</p>
+                </div>
+
+                <form id="form-auth" onsubmit="handleAuth(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="team-name">Nome da Equipe</label>
+                        <input type="text" id="team-name" required placeholder="Ex: Equipe Palavra Viva" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 focus:border-transparent outline-none text-sm bg-white">
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="username">Usuário do Grupo</label>
+                            <input type="text" id="username" required placeholder="palavraviva01" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 focus:border-transparent outline-none text-sm bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="password">Senha</label>
+                            <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 focus:border-transparent outline-none text-sm bg-white">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Entrar no Estúdio do Grupo</span>
+                    </button>
+                    <p class="text-xs text-center text-marrom-600 italic">
+                        * Protótipo funcional com armazenamento local de dados no navegador.
+                    </p>
+                </form>
+            </div>
+
+            <!-- MENU PRINCIPAL EM CARTÕES ILUSTRADOS GRANDES -->
+            <div>
+                <h2 class="text-2xl font-display font-bold text-marrom-900 mb-6 flex items-center space-x-2">
+                    <i class="fa-solid fa-compass text-terracota-500"></i>
+                    <span>Menu da Oficina</span>
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    
+                    <!-- Cartão 1: Criar Roteiro -->
+                    <div onclick="navigateTo('roteiros')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-vinho-700">
+                        <div>
+                            <div class="w-14 h-14 rounded-xl bg-vinho-50 text-vinho-700 flex items-center justify-center text-2xl mb-4 border border-vinho-100">
+                                <i class="fa-solid fa-pen-fancy"></i>
+                            </div>
+                            <span class="text-xs font-bold text-terracota-500 uppercase tracking-wider">Etapa 1</span>
+                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">1. Criar Roteiro</h3>
+                            <p class="text-sm text-marrom-600 leading-relaxed">
+                                Planeje o episódio, defina o tema, formato, tom e gere sugestões automáticas de falas para a equipe.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center text-xs font-bold text-vinho-700">
+                            <span>Acessar Gerador</span>
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Cartão 2: Estúdio -->
+                    <div onclick="navigateTo('estudio')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-terracota-500">
+                        <div>
+                            <div class="w-14 h-14 rounded-xl bg-terracota-50 text-terracota-600 flex items-center justify-center text-2xl mb-4 border border-terracota-100">
+                                <i class="fa-solid fa-microphone-lines"></i>
+                            </div>
+                            <span class="text-xs font-bold text-terracota-500 uppercase tracking-wider">Etapa 2</span>
+                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">2. Estúdio de Gravação</h3>
+                            <p class="text-sm text-marrom-600 leading-relaxed">
+                                Grave, ouça prévias, ajuste volumes, associe roteiros e salve seus episódios com total controle.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center text-xs font-bold text-terracota-600">
+                            <span>Abrir Estúdio</span>
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Cartão 3: Meus Episódios -->
+                    <div onclick="navigateTo('biblioteca')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-dourado-500">
+                        <div>
+                            <div class="w-14 h-14 rounded-xl bg-amber-50 text-dourado-600 flex items-center justify-center text-2xl mb-4 border border-amber-100">
+                                <i class="fa-solid fa-compact-disc"></i>
+                            </div>
+                            <span class="text-xs font-bold text-dourado-600 uppercase tracking-wider">Organização</span>
+                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">3. Meus Episódios</h3>
+                            <p class="text-sm text-marrom-600 leading-relaxed">
+                                Organize produções em playlists temáticas, controle a visibilidade privada ou pública e baixe arquivos.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center text-xs font-bold text-dourado-600">
+                            <span>Ver Biblioteca</span>
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Cartão 4: Vitrine Pública -->
+                    <div onclick="navigateTo('vitrine')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-emerald-600">
+                        <div>
+                            <div class="w-14 h-14 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100">
+                                <i class="fa-solid fa-tower-broadcast"></i>
+                            </div>
+                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Compartilhamento</span>
+                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">4. Vitrine Pública</h3>
+                            <p class="text-sm text-marrom-600 leading-relaxed">
+                                Ouça e prestigie os podcasts que foram publicados abertamente pelas outras equipes da turma.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center text-xs font-bold text-emerald-600">
+                            <span>Explorar Vitrine</span>
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Cartão 5: Revisão e Avaliação -->
+                    <div onclick="navigateTo('revisao')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-indigo-600">
+                        <div>
+                            <div class="w-14 h-14 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Reflexão</span>
+                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">5. Revisão & Reflexão</h3>
+                            <p class="text-sm text-marrom-600 leading-relaxed">
+                                Avalie a qualidade do conteúdo, revise a linguagem com o checklist e registre o aprendizado do grupo.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center text-xs font-bold text-indigo-600">
+                            <span>Fazer Revisão</span>
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                    <!-- Cartão 6: Guia da Oficina -->
+                    <div onclick="navigateTo('guia')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-marrom-600">
+                        <div>
+                            <div class="w-14 h-14 rounded-xl bg-marrom-100 text-marrom-700 flex items-center justify-center text-2xl mb-4 border border-marrom-300">
+                                <i class="fa-solid fa-graduation-cap"></i>
+                            </div>
+                            <span class="text-xs font-bold text-marrom-600 uppercase tracking-wider">Metodologia</span>
+                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">6. Guia da Oficina</h3>
+                            <p class="text-sm text-marrom-600 leading-relaxed">
+                                Consulte as instruções pedagógicas, funções da equipe, etapas do projeto e dicas da professora.
+                            </p>
+                        </div>
+                        <div class="mt-6 flex items-center text-xs font-bold text-marrom-700">
+                            <span>Ler Manual</span>
+                            <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 2: GERADOR INTELIGENTE DE ROTEIROS -->
+        <section id="sec-roteiros" class="hidden space-y-6">
+            <div class="flex items-center justify-between border-b border-marrom-300 pb-4">
+                <div>
+                    <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-pen-fancy text-terracota-500"></i>
+                        <span>Gerador Inteligente de Roteiros</span>
+                    </h2>
+                    <p class="text-sm text-marrom-600">Preencha os detalhes e o sistema criará uma estrutura guiada para a sua fala</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- FORMULÁRIO DE ENTRADA -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-sliders text-vinho-700"></i>
+                        <span>Informações do Podcast</span>
+                    </h3>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Título Provisório</label>
+                        <input type="text" id="script-title" placeholder="Ex: Vozes da Literatura Escolar" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Tema Principal</label>
+                        <input type="text" id="script-theme" placeholder="Ex: A importância das crônicas no cotidiano" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Formato</label>
+                            <select id="script-format" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
+                                <option value="Entrevista">Entrevista</option>
+                                <option value="Debate">Debate</option>
+                                <option value="Conversa">Conversa Descontraída</option>
+                                <option value="Notícia">Jornalístico / Notícia</option>
+                                <option value="Crônica Sonora">Crônica Sonora</option>
+                                <option value="Contação de Histórias">Contação de Histórias</option>
+                                <option value="Educativo">Podcast Educativo</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Duração Est.</option>
+                            <select id="script-duration" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
+                                <option value="3 minutos">3 minutos</option>
+                                <option value="5 minutos">5 minutos</option>
+                                <option value="8 minutos">8 minutos</option>
+                                <option value="10 minutos">10 minutos</option>
+                                <option value="15 minutos">15 minutos</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Apresentadores (1 a 5)</label>
+                            <input type="number" id="script-hosts" min="1" max="5" value="2" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Tom de Linguagem</label>
+                            <select id="script-tone" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
+                                <option value="Descontraído">Descontraído</option>
+                                <option value="Jornalístico">Jornalístico</option>
+                                <option value="Formal">Formal</option>
+                                <option value="Investigativo">Investigativo</option>
+                                <option value="Bem-humorado">Bem-humorado</option>
+                                <option value="Poético">Poético</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Público-Alvo</label>
+                        <input type="text" id="script-audience" placeholder="Ex: Estudantes do Ensino Fundamental II" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Convidados (se houver)</label>
+                        <input type="text" id="script-guests" placeholder="Ex: Professor de História / Aluno convidado" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Ideias Principais & Tópicos</label>
+                        <textarea id="script-ideas" rows="3" placeholder="Ex: Conceito de crônica, exemplos de Machado de Assis, relato pessoal..." class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Mensagem de Encerramento</label>
+                        <input type="text" id="script-closing" placeholder="Ex: Reflita sobre o que lê no seu dia a dia!" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+                    </div>
+
+                    <button onclick="generateScript()" class="w-full btn-vinho font-bold py-3 px-4 rounded-lg text-sm flex items-center justify-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-wand-magic-sparkles text-dourado-400"></i>
+                        <span>Gerar Roteiro Estruturado</span>
+                    </button>
+                </div>
+
+                <!-- PREVIEW E EDIÇÃO DO ROTEIRO -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between border-b pb-3 mb-4">
+                            <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider flex items-center space-x-2">
+                                <i class="fa-solid fa-file-lines text-terracota-500"></i>
+                                <span>Roteiro Gerado</span>
+                            </h3>
+                            <div class="flex items-center space-x-2">
+                                <button onclick="copyScriptToClipboard()" title="Copiar Texto" class="text-xs bg-creme-200 hover:bg-creme-300 text-marrom-800 px-2.5 py-1.5 rounded font-medium flex items-center space-x-1">
+                                    <i class="fa-solid fa-copy"></i>
+                                    <span>Copiar</span>
+                                </button>
+                                <button onclick="saveGeneratedScript()" title="Salvar Roteiro" class="text-xs bg-vinho-700 hover:bg-vinho-800 text-white px-3 py-1.5 rounded font-medium flex items-center space-x-1 shadow-sm">
+                                    <i class="fa-solid fa-floppy-disk"></i>
+                                    <span>Salvar no Projeto</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Edição livre do roteiro gerado -->
+                        <div id="script-output-container" class="space-y-4">
+                            <textarea id="script-editor" rows="20" class="w-full p-4 rounded-xl border border-marrom-200 font-serif text-sm text-marrom-900 bg-creme-50 leading-relaxed focus:ring-2 focus:ring-vinho-700 outline-none" placeholder="Preencha o formulário ao lado e clique em 'Gerar Roteiro Estruturado' para visualizar aqui a sua minuta editável..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t text-xs text-marrom-600 flex items-center justify-between">
+                        <span><i class="fa-solid fa-info-circle text-dourado-600 mr-1"></i>O roteiro é um ponto de partida. Edite como desejar antes de gravar.</span>
+                        <span id="script-saved-badge" class="hidden text-emerald-700 font-bold"><i class="fa-solid fa-check mr-1"></i>Salvo!</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 3: ESTÚDIO DE GRAVAÇÃO ONLINE -->
+        <section id="sec-estudio" class="hidden space-y-6">
+            <div class="flex items-center justify-between border-b border-marrom-300 pb-4">
+                <div>
+                    <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-microphone-lines text-terracota-500"></i>
+                        <span>Estúdio de Gravação Online</span>
+                    </h2>
+                    <p class="text-sm text-marrom-600">Grave áudio diretamente pelo navegador, escute e salve no seu projeto</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- PAINEL DE CONTROLE DE ÁUDIO -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-6">
+                    
+                    <!-- Configurações Rápidas do Episódio -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-creme-100 p-4 rounded-xl border border-creme-300">
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome do Episódio</label>
+                            <input type="text" id="studio-ep-title" value="Episódio 1 — Roteiro de Língua Portuguesa" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Visibilidade</label>
+                            <select id="studio-ep-visibility" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
+                                <option value="Privado">🔒 Privado — Somente o Grupo</option>
+                                <option value="Público">🌐 Público — Disponível na Vitrine</option>
+                            </select>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Associar a Roteiro Existente</label>
+                            <select id="studio-ep-script-link" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
+                                <option value="">-- Selecionar um roteiro do grupo (Opcional) --</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- MESA DE SOM / VISUALIZADOR DE GRAVAÇÃO -->
+                    <div class="bg-marrom-900 rounded-2xl p-6 text-creme-100 flex flex-col items-center justify-center space-y-4 border-2 border-dourado-500 shadow-inner relative overflow-hidden">
+                        
+                        <!-- Indicador REC -->
+                        <div class="flex items-center space-x-2">
+                            <div id="rec-dot" class="w-3.5 h-3.5 rounded-full bg-gray-500"></div>
+                            <span id="rec-status-text" class="text-xs uppercase tracking-widest font-bold text-creme-300">Estúdio Pronto</span>
+                        </div>
+
+                        <!-- Timer em destaque -->
+                        <div id="studio-timer" class="font-mono text-4xl sm:text-5xl font-bold tracking-wider text-dourado-400">
+                            00:00
+                        </div>
+
+                        <!-- VU Meter / Audio Waves Container -->
+                        <div id="visualizer-container" class="w-full h-16 flex items-center justify-center space-x-1.5 px-4">
+                            <!-- Barras estáticas/dinâmicas -->
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-3"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-6"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-10"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-4"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-8"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-12"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-5"></div>
+                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-9"></div>
+                        </div>
+
+                        <!-- Botões de Ação do Microfone -->
+                        <div class="flex items-center space-x-3 pt-2">
+                            <button id="btn-start-rec" onclick="startRecording()" class="bg-terracota-500 hover:bg-terracota-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 shadow-lg transition">
+                                <i class="fa-solid fa-circle text-xs text-red-200"></i>
+                                <span>GRAVAR</span>
+                            </button>
+
+                            <button id="btn-stop-rec" onclick="stopRecording()" disabled class="bg-gray-700 opacity-50 cursor-not-allowed text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 transition">
+                                <i class="fa-solid fa-square"></i>
+                                <span>PARAR</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- REPRODUTOR DA PRÉVIA E SALVAMENTO -->
+                    <div id="preview-audio-container" class="hidden bg-creme-50 p-4 rounded-xl border border-marrom-300 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs font-bold text-marrom-800 uppercase flex items-center space-x-1">
+                                <i class="fa-solid fa-headphones text-vinho-700"></i>
+                                <span>Prévia do Áudio Gravado</span>
+                            </span>
+                            <span class="text-xs text-marrom-600" id="audio-format-badge">Formato WebM/Ogg</span>
+                        </div>
+                        
+                        <audio id="audio-preview" controls class="w-full"></audio>
+
+                        <div class="flex flex-wrap gap-2 pt-2">
+                            <button onclick="saveRecordedEpisode()" class="btn-vinho flex-1 py-2.5 px-4 rounded-lg text-sm font-bold flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Salvar no Projeto</span>
+                            </button>
+                            <button onclick="downloadEpisodeAudio()" class="bg-marrom-700 hover:bg-marrom-800 text-creme-50 py-2.5 px-4 rounded-lg text-sm font-bold flex items-center justify-center space-x-2">
+                                <i class="fa-solid fa-download"></i>
+                                <span>Baixar Áudio</span>
+                            </button>
+                            <button onclick="clearPreview()" class="bg-gray-200 hover:bg-gray-300 text-marrom-800 py-2.5 px-3 rounded-lg text-sm font-medium">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- CONSULTA RÁPIDA DE ROTEIRO NO ESTÚDIO -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 mb-3 flex items-center space-x-2">
+                            <i class="fa-solid fa-scroll text-vinho-700"></i>
+                            <span>Consulta de Roteiro em Estúdio</span>
+                        </h3>
+                        <p class="text-xs text-marrom-600 mb-3">Leia suas falas durante a gravação sem mudar de tela.</p>
+                        
+                        <div id="studio-script-display" class="bg-creme-50 p-4 rounded-xl border border-marrom-200 text-xs font-serif leading-relaxed text-marrom-900 max-h-96 overflow-y-auto">
+                            <em>Nenhum roteiro selecionado no momento. Você pode selecionar um no menu acima ou criar um no módulo 'Criar Roteiro'.</em>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SEÇÃO 4: BIBLIOTECA DE EPISÓDIOS E PLAYLISTS -->
+        <section id="sec-biblioteca" class="hidden space-y-6">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-marrom-300 pb-4 gap-4">
+                <div>
+                    <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                        <i class="fa-solid fa-compact-disc text-dourado-600"></i>
+                        <span>Meus Episódios e Playlists</span>
+                    </h2>
+                    <p class="text-sm text-marrom-600">Gerencie todas as gravações e coleções da sua equipe</p>
+                </div>
+                <button onclick="openCreatePlaylistModal()" class="btn-vinho px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Criar Nova Playlist</span>
+                </button>
+            </div>
+
+            <!-- FILTROS E ABAS -->
+            <div class="flex flex-wrap items-center justify-between gap-4 bg-creme-100 p-3 rounded-xl border border-marrom-200">
+                <div class="flex items-center space-x-2 overflow-x-auto py-1">
+                    <button onclick="filterEpisodes('all')" class="filter-ep-btn bg-vinho-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold">Todos</button>
+                    <button onclick="filterEpisodes('public')" class="filter-ep-btn bg-white hover:bg-vinho-50 text-marrom-800 text-xs px-3 py-1.5 rounded-lg font-medium border">🌐 Públicos</button>
+                    <button onclick="filterEpisodes('private')" class="filter-ep-btn bg-white hover:bg-vinho-50 text-marrom-800 text-xs px-3 py-1.5 rounded-lg font-medium border">🔒 Privados</button>
+                </div>
+
+                <div class="flex items-center space-x-2">
+                    <span class="text-xs font-bold text-marrom-700">Playlist:</span>
+                    <select id="playlist-filter-select" onchange="filterByPlaylist(this.value)" class="text-xs px-2.5 py-1.5 rounded-lg border border-marrom-300 bg-white">
+                        <option value="all">Todas as Playlists</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- LISTA DE EPISÓDIOS DA EQUIPE -->
+            <div id="episodes-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Inserido dinamicamente via JS -->
+            </div>
+        </section>
+
+        <!-- SEÇÃO 5: VITRINE PÚBLICA -->
+        <section id="sec-vitrine" class="hidden space-y-6">
+            <div class="border-b border-marrom-300 pb-4">
+                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-tower-broadcast text-emerald-600"></i>
+                    <span>Vitrine Pública da Turma</span>
+                </h2>
+                <p class="text-sm text-marrom-600">Ouça os podcasts compartilhados publicamente por todos os grupos</p>
+            </div>
+
+            <div id="public-showcase-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Preenchido via JS -->
+            </div>
+        </section>
+
+        <!-- SEÇÃO 6: REVISÃO, AUTOAVALIAÇÃO E METODOLOGIAS -->
+        <section id="sec-revisao" class="hidden space-y-6">
+            <div class="border-b border-marrom-300 pb-4">
+                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-clipboard-check text-indigo-600"></i>
+                    <span>Revisão Pedagógica & Autoavaliação</span>
+                </h2>
+                <p class="text-sm text-marrom-600">Pense criticamente sobre a produção antes da publicação final</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <!-- CHECKLIST DE QUALIDADE -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-list-check text-vinho-700"></i>
+                        <span>Checklist do Grupo</span>
+                    </h3>
+
+                    <div class="space-y-3" id="checklist-items font-sm">
+                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
+                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <span class="text-sm text-marrom-800">O tema principal e o objetivo do episódio estão claros para o ouvinte?</span>
+                        </label>
+                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
+                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <span class="text-sm text-marrom-800">O roteiro segue a estrutura com início, desenvolvimento e encerramento?</span>
+                        </label>
+                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
+                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <span class="text-sm text-marrom-800">A dicção e o tom de voz estão compreensíveis e coerentes com a proposta?</span>
+                        </label>
+                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
+                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <span class="text-sm text-marrom-800">Todos os integrantes participaram de forma equilibrada nas funções?</span>
+                        </label>
+                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
+                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <span class="text-sm text-marrom-800">As informações apresentadas foram devidamente checadas em fontes confiáveis?</span>
+                        </label>
+                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
+                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <span class="text-sm text-marrom-800">Efeitos sonoros e trilhas respeitam os direitos autorais e licenças autorizadas?</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- FORMULÁRIO DE AVALIAÇÃO DE APRENDIZAGEM -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-comment-dots text-indigo-600"></i>
+                        <span>Reflexão do Grupo</span>
+                    </h3>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">O que aprendemos nesta produção?</label>
+                        <textarea id="reflection-learned" rows="3" class="w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-vinho-700 outline-none" placeholder="Ex: Aprendemos a organizar ideias e distribuir falas..."></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">O que melhoraríamos em uma próxima gravação?</label>
+                        <textarea id="reflection-improve" rows="3" class="w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-vinho-700 outline-none" placeholder="Ex: Controlar melhor a altura do áudio e evitar ruídos de fundo..."></textarea>
+                    </div>
+
+                    <button onclick="saveReflection()" class="w-full btn-vinho py-2.5 rounded-lg text-sm font-bold flex items-center justify-center space-x-2 shadow">
+                        <i class="fa-solid fa-floppy-disk"></i>
+                        <span>Registrar Autoavaliação</span>
+                    </button>
+                    <p id="reflection-status" class="text-xs text-emerald-700 font-bold hidden text-center"><i class="fa-solid fa-check mr-1"></i>Reflexão salva com sucesso!</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEÇÃO 7: GUIA DA OFICINA -->
+        <section id="sec-guia" class="hidden space-y-6">
+            <div class="border-b border-marrom-300 pb-4">
+                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-book-bookmark text-terracota-500"></i>
+                    <span>Guia Pedagógico da Oficina</span>
+                </h2>
+                <p class="text-sm text-marrom-600">Orientações de produção e pilares da aprendizagem por podcasts</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
+                    <div class="flex items-center space-x-3 text-vinho-700">
+                        <i class="fa-solid fa-diagram-project text-2xl"></i>
+                        <h3 class="text-lg font-display font-bold">Aprendizagem Baseada em Projetos</h3>
+                    </div>
+                    <p class="text-sm text-marrom-700 leading-relaxed">
+                        Os estudantes exercitam todas as etapas reais de uma produção de mídia: desde o brainstorm do tema até a edição final e veiculação pública.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
+                    <div class="flex items-center space-x-3 text-terracota-600">
+                        <i class="fa-solid fa-people-group text-2xl"></i>
+                        <h3 class="text-lg font-display font-bold">Aprendizagem Colaborativa</h3>
+                    </div>
+                    <p class="text-sm text-marrom-700 leading-relaxed">
+                        Divisão de tarefas ativas: roteirista, locutor, técnico de som e mediador da equipe, incentivando a cooperação.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
+                    <div class="flex items-center space-x-3 text-dourado-600">
+                        <i class="fa-solid fa-person-chalkboard text-2xl"></i>
+                        <h3 class="text-lg font-display font-bold">Sala de Aula Invertida</h3>
+                    </div>
+                    <p class="text-sm text-marrom-700 leading-relaxed">
+                        Pesquisa prévia de tópicos antes da gravação para permitir debates mais profundos, embasados e argumentativos.
+                    </p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
+                    <div class="flex items-center space-x-3 text-emerald-600">
+                        <i class="fa-solid fa-bullhorn text-2xl"></i>
+                        <h3 class="text-lg font-display font-bold">Protagonismo Estudantil</h3>
+                    </div>
+                    <p class="text-sm text-marrom-700 leading-relaxed">
+                        Os alunos possuem liberdade para selecionar os assuntos, definir o tom de fala e expressar suas vozes e repertórios.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER DA OFICINA -->
+    <footer class="bg-marrom-900 text-creme-300 py-6 border-t-4 border-dourado-500 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between text-xs space-y-2 sm:space-y-0">
+            <div>
+                <p class="font-bold text-creme-100 font-display text-sm">VOZES EM PAUTA — Oficina de Podcast</p>
+                <p>Orientação: Professora Bárbara Vitória • Língua Portuguesa</p>
+            </div>
+            <div class="text-creme-300">
+                <span>Ambiente Pedagógico de Produção de Mídia Escolar</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- MODAL DE CRIAR PLAYLIST -->
+    <div id="modal-playlist" class="fixed inset-0 bg-marrom-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl p-6 max-w-md w-full border-2 border-vinho-700 shadow-2xl space-y-4">
+            <h3 class="text-lg font-display font-bold text-marrom-900 flex items-center space-x-2">
+                <i class="fa-solid fa-folder-plus text-vinho-700"></i>
+                <span>Nova Playlist do Grupo</span>
+            </h3>
+            <div>
+                <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome da Playlist</label>
+                <input type="text" id="new-playlist-title" placeholder="Ex: Literatura em voz alta" class="w-full p-2.5 border border-marrom-300 rounded-lg text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
+            </div>
+            <div class="flex justify-end space-x-2 pt-2">
+                <button onclick="closeCreatePlaylistModal()" class="px-4 py-2 bg-gray-200 text-marrom-800 text-xs font-bold rounded-lg">Cancelar</button>
+                <button onclick="saveNewPlaylist()" class="px-4 py-2 btn-vinho text-xs font-bold rounded-lg">Criar Playlist</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT PRINCIPAL DA APLICAÇÃO -->
+    <script>
+        // ESTADO GLOBAL DO APLICATIVO
+        let currentFontScale = 1;
+        let currentUser = JSON.parse(localStorage.getItem('vozes_current_user')) || null;
+        
+        let scripts = JSON.parse(localStorage.getItem('vozes_scripts')) || [];
+        let playlists = JSON.parse(localStorage.getItem('vozes_playlists')) || [
+            "Literatura em voz alta",
+            "Entrevistas da nossa turma",
+            "Debates e argumentação",
+            "Notícias da escola",
+            "Crônicas sonoras"
+        ];
+        let episodes = JSON.parse(localStorage.getItem('vozes_episodes')) || [
+            {
+                id: 'demo-1',
+                title: 'Episódio Exemplo — O Poder das Crônicas',
+                groupName: 'Equipe Palavra Viva',
+                user: 'palavraviva01',
+                playlist: 'Crônicas sonoras',
+                visibility: 'Público',
+                date: '28/10/2026',
+                audioUrl: '', // Mock de áudio
+                scriptId: null,
+                listens: 14
+            }
+        ];
+
+        // VARIÁVEIS DO ESTÚDIO DE GRAVAÇÃO
+        let mediaRecorder;
+        let audioChunks = [];
+        let recordedBlob = null;
+        let recordingTimerInterval;
+        let recordingSeconds = 0;
+
+        // ACESSIBILIDADE: FONTE
+        function changeFontSize(delta) {
+            currentFontScale = Math.min(Math.max(currentFontScale + delta, 0.85), 1.3);
+            document.documentElement.style.setProperty('--font-scale', currentFontScale);
+        }
+        function resetFontSize() {
+            currentFontScale = 1;
+            document.documentElement.style.setProperty('--font-scale', currentFontScale);
+        }
+
+        // RODAR AO CARREGAR PÁGINA
+        window.addEventListener('DOMContentLoaded', () => {
+            renderUserStatus();
+            renderPlaylistsOptions();
+            renderEpisodesList();
+            renderPublicShowcase();
+            populateScriptSelectorInStudio();
+        });
+
+        // AUTENTICAÇÃO E SESSÃO
+        function handleAuth(e) {
+            e.preventDefault();
+            const teamName = document.getElementById('team-name').value.trim();
+            const username = document.getElementById('username').value.trim();
+            
+            if(!teamName || !username) return;
+
+            currentUser = {
+                teamName: teamName,
+                username: username
+            };
+            localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
+            renderUserStatus();
+            alert(`Bem-vindos ao Estúdio, ${teamName}!`);
+        }
+
+        function logoutUser() {
+            currentUser = null;
+            localStorage.removeItem('vozes_current_user');
+            renderUserStatus();
+            navigateTo('home');
+        }
+
+        function renderUserStatus() {
+            const container = document.getElementById('user-status-container');
+            const authBox = document.getElementById('auth-box');
+            const mainNav = document.getElementById('main-nav-bar');
+
+            if (currentUser) {
+                container.innerHTML = `
+                    <div class="flex items-center space-x-2 bg-vinho-900 border border-vinho-700 px-3 py-1.5 rounded-lg text-xs">
+                        <i class="fa-solid fa-users text-dourado-400"></i>
+                        <span class="font-bold text-creme-50">${currentUser.teamName}</span>
+                        <button onclick="logoutUser()" title="Sair do Grupo" class="ml-2 text-creme-300 hover:text-red-300">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                `;
+                if(authBox) authBox.classList.add('hidden');
+                if(mainNav) mainNav.classList.remove('hidden');
+            } else {
+                container.innerHTML = `
+                    <button onclick="navigateTo('home')" class="text-xs font-bold text-dourado-400 bg-vinho-800 hover:bg-vinho-700 px-3 py-1.5 rounded-lg border border-vinho-600">
+                        Acessar Grupo
+                    </button>
+                `;
+                if(authBox) authBox.classList.remove('hidden');
+                if(mainNav) mainNav.classList.add('hidden');
+            }
+        }
+
+        // NAVEGAÇÃO ENTRE SEÇÕES (SPA)
+        function navigateTo(sectionId) {
+            const sections = ['home', 'roteiros', 'estudio', 'biblioteca', 'vitrine', 'revisao', 'guia'];
+            sections.forEach(sec => {
+                const el = document.getElementById(`sec-${sec}`);
+                if(el) {
+                    if (sec === sectionId) {
+                        el.classList.remove('hidden');
+                    } else {
+                        el.classList.add('hidden');
+                    }
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // GERADOR INTELIGENTE DE ROTEIROS
+        function generateScript() {
+            const title = document.getElementById('script-title').value || 'Nosso Podcast';
+            const theme = document.getElementById('script-theme').value || 'Tema Geral';
+            const format = document.getElementById('script-format').value;
+            const hostsCount = document.getElementById('script-hosts').value;
+            const tone = document.getElementById('script-tone').value;
+            const audience = document.getElementById('script-audience').value || 'Comunidade Escolar';
+            const guests = document.getElementById('script-guests').value || 'Nenhum convidado';
+            const duration = document.getElementById('script-duration').value;
+            const ideas = document.getElementById('script-ideas').value || 'Principais tópicos do assunto';
+            const closing = document.getElementById('script-closing').value || 'Obrigado por escutar nosso podcast!';
+
+            let hostsArray = [];
+            for(let i = 1; i <= hostsCount; i++) {
+                hostsArray.push(`Apresentador(a) ${i}`);
+            }
+
+            let scriptText = `====================================================\n`;
+            scriptText += `ROTEIRO ESTRUTURADO — ${title.toUpperCase()}\n`;
+            scriptText += `====================================================\n`;
+            scriptText += `• Tema: ${theme}\n`;
+            scriptText += `• Formato: ${format} | Tom: ${tone} | Duração: ${duration}\n`;
+            scriptText += `• Público-Alvo: ${audience}\n`;
+            scriptText += `• Equipe: ${hostsArray.join(', ')}\n`;
+            scriptText += `• Convidado(s): ${guests}\n\n`;
+
+            scriptText += `--- 1. ABERTURA (Vínheta sonora suave) ---\n`;
+            scriptText += `[Efeito Sonoro / Trilha de Abertura em tom ${tone.toLowerCase()}]\n`;
+            scriptText += `${hostsArray[0]}: Olá a todos! Sejam muito bem-vindos ao podcast '${title}'. Eu sou ${hostsArray[0]}...\n`;
+            if(hostsArray[1]) {
+                scriptText += `${hostsArray[1]}: ...e eu sou ${hostsArray[1]}! Hoje vamos conversar sobre um tema super relevante: ${theme}.\n`;
+            }
+            scriptText += `\n--- 2. CONTEXTUALIZAÇÃO DO TEMA ---\n`;
+            scriptText += `${hostsArray[0]}: Para quem está nos ouvindo, escolhemos este assunto porque ${ideas}.\n`;
+
+            if (format === 'Entrevista') {
+                scriptText += `\n--- 3. ENTREVISTA & PERGUNTAS ---\n`;
+                scriptText += `${hostsArray[0]}: Hoje temos a presença especial de ${guests}. Seja bem-vindo(a)!\n`;
+                scriptText += `[Convidado]: Obrigado pelo convite!\n`;
+                scriptText += `${hostsArray[1] || hostsArray[0]}: Para começar: qual a sua visão sobre ${theme}?\n`;
+                scriptText += `[Convidado]: (Espaço para resposta do convidado...)\n`;
+            } else if (format === 'Debate') {
+                scriptText += `\n--- 3. DEBATE E ARGUMENTAÇÃO ---\n`;
+                scriptText += `${hostsArray[0]}: Por um lado, temos o argumento de que...\n`;
+                if(hostsArray[1]) scriptText += `${hostsArray[1]}: Por outro lado, precisamos considerar que...\n`;
+            } else {
+                scriptText += `\n--- 3. DESENVOLVIMENTO DAS IDEIAS ---\n`;
+                scriptText += `${hostsArray[0]}: Vamos analisar os pontos principais: ${ideas}\n`;
+            }
+
+            scriptText += `\n--- 4. ENCERRAMENTO E REFLEXÃO FINAL ---\n`;
+            scriptText += `${hostsArray[0]}: Estamos chegando ao fim deste episódio. ${closing}\n`;
+            if(hostsArray[1]) scriptText += `${hostsArray[1]}: Não se esqueça de compartilhar com seus colegas. Até a próxima!\n`;
+            scriptText += `[Trilha Sonora de Encerramento]\n\n`;
+
+            scriptText += `--- CHECKLIST DE GRAVAÇÃO ---\n`;
+            scriptText += `[ ] Fazer teste de microfone antes\n[ ] Evitar ruídos no ambiente\n[ ] Manter o tom ${tone}`;
+
+            document.getElementById('script-editor').value = scriptText;
+            document.getElementById('script-saved-badge').classList.add('hidden');
+        }
+
+        function copyScriptToClipboard() {
+            const editor = document.getElementById('script-editor');
+            if(!editor.value) return;
+            editor.select();
+            document.execCommand('copy');
+            alert('Roteiro copiado para a área de transferência!');
+        }
+
+        function saveGeneratedScript() {
+            const text = document.getElementById('script-editor').value;
+            const title = document.getElementById('script-title').value || 'Roteiro Sem Título';
+            if(!text) return;
+
+            const newScript = {
+                id: 'script_' + Date.now(),
+                title: title,
+                content: text,
+                date: new Date().toLocaleDateString('pt-BR'),
+                team: currentUser ? currentUser.teamName : 'Grupo Geral'
+            };
+
+            scripts.push(newScript);
+            localStorage.setItem('vozes_scripts', JSON.stringify(scripts));
+            document.getElementById('script-saved-badge').classList.remove('hidden');
+            populateScriptSelectorInStudio();
+        }
+
+        // ESTÚDIO DE GRAVAÇÃO COM MEDIA RECORDER
+        async function startRecording() {
+            if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                alert('O seu navegador não possui suporte para gravação de áudio.');
+                return;
+            }
+
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                mediaRecorder = new MediaRecorder(stream);
+                audioChunks = [];
+
+                mediaRecorder.ondataavailable = event => {
+                    audioChunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    recordedBlob = new Blob(audioChunks, { type: 'audio/webm' });
+                    const audioUrl = URL.createObjectURL(recordedBlob);
+                    const previewEl = document.getElementById('audio-preview');
+                    previewEl.src = audioUrl;
+                    document.getElementById('preview-audio-container').classList.remove('hidden');
+                };
+
+                mediaRecorder.start();
+
+                // Atualizar UI
+                document.getElementById('btn-start-rec').disabled = true;
+                document.getElementById('btn-start-rec').classList.add('opacity-50');
+                document.getElementById('btn-stop-rec').disabled = false;
+                document.getElementById('btn-stop-rec').classList.remove('opacity-50', 'cursor-not-allowed');
+                
+                document.getElementById('rec-dot').classList.remove('bg-gray-500');
+                document.getElementById('rec-dot').classList.add('bg-red-500', 'animate-pulse');
+                document.getElementById('rec-status-text').innerText = 'GRAVANDO ÁUDIO...';
+
+                // Timer
+                recordingSeconds = 0;
+                recordingTimerInterval = setInterval(() => {
+                    recordingSeconds++;
+                    const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
+                    const secs = String(recordingSeconds % 60).padStart(2, '0');
+                    document.getElementById('studio-timer').innerText = `${mins}:${secs}`;
+                }, 1000);
+
+            } catch (err) {
+                alert('Permissão de microfone negada ou indisponível.');
+            }
+        }
+
+        function stopRecording() {
+            if(mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                // Parar tracks
+                mediaRecorder.stream.getTracks().forEach(track => track.stop());
+
+                clearInterval(recordingTimerInterval);
+
+                // Atualizar UI
+                document.getElementById('btn-start-rec').disabled = false;
+                document.getElementById('btn-start-rec').classList.remove('opacity-50');
+                document.getElementById('btn-stop-rec').disabled = true;
+                document.getElementById('btn-stop-rec').classList.add('opacity-50', 'cursor-not-allowed');
+
+                document.getElementById('rec-dot').classList.add('bg-gray-500');
+                document.getElementById('rec-dot').classList.remove('bg-red-500', 'animate-pulse');
+                document.getElementById('rec-status-text').innerText = 'GRAVAÇÃO CONCLUÍDA';
+            }
+        }
+
+        function clearPreview() {
+            document.getElementById('preview-audio-container').classList.add('hidden');
+            recordedBlob = null;
+            document.getElementById('studio-timer').innerText = '00:00';
+            document.getElementById('rec-status-text').innerText = 'Estúdio Pronto';
+        }
+
+        function saveRecordedEpisode() {
+            const title = document.getElementById('studio-ep-title').value.trim() || 'Episódio Sem Título';
+            const visibility = document.getElementById('studio-ep-visibility').value;
+            const scriptId = document.getElementById('studio-ep-script-link').value || null;
+
+            const newEp = {
+                id: 'ep_' + Date.now(),
+                title: title,
+                groupName: currentUser ? currentUser.teamName : 'Equipe Visitante',
+                user: currentUser ? currentUser.username : 'anon',
+                playlist: 'Crônicas sonoras',
+                visibility: visibility,
+                date: new Date().toLocaleDateString('pt-BR'),
+                audioUrl: document.getElementById('audio-preview').src,
+                scriptId: scriptId,
+                listens: 0
+            };
+
+            episodes.unshift(newEp);
+            localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
+            
+            alert('Episódio salvo com sucesso no projeto!');
+            clearPreview();
+            renderEpisodesList();
+            renderPublicShowcase();
+            navigateTo('biblioteca');
+        }
+
+        function downloadEpisodeAudio() {
+            if(!recordedBlob) return;
+            const a = document.createElement('a');
+            a.href = URL.createObjectURL(recordedBlob);
+            a.download = `podcast_${Date.now()}.webm`;
+            a.click();
+        }
+
+        function populateScriptSelectorInStudio() {
+            const select = document.getElementById('studio-ep-script-link');
+            select.innerHTML = '<option value="">-- Selecionar um roteiro do grupo (Opcional) --</option>';
+            scripts.forEach(s => {
+                select.innerHTML += `<option value="${s.id}">${s.title} (${s.date})</option>`;
+            });
+
+            select.onchange = function() {
+                const selected = scripts.find(s => s.id === this.value);
+                const display = document.getElementById('studio-script-display');
+                if(selected) {
+                    display.innerText = selected.content;
+                } else {
+                    display.innerHTML = '<em>Nenhum roteiro selecionado no momento.</em>';
+                }
+            };
+        }
+
+        // GERENCIAMENTO DE PLAYLISTS E BIBLIOTECA
+        function openCreatePlaylistModal() {
+            document.getElementById('modal-playlist').classList.remove('hidden');
+        }
+        function closeCreatePlaylistModal() {
+            document.getElementById('modal-playlist').classList.add('hidden');
+        }
+        function saveNewPlaylist() {
+            const name = document.getElementById('new-playlist-title').value.trim();
+            if(name && !playlists.includes(name)) {
+                playlists.push(name);
+                localStorage.setItem('vozes_playlists', JSON.stringify(playlists));
+                renderPlaylistsOptions();
+                closeCreatePlaylistModal();
+            }
+        }
+
+        function renderPlaylistsOptions() {
+            const select = document.getElementById('playlist-filter-select');
+            select.innerHTML = '<option value="all">Todas as Playlists</option>';
+            playlists.forEach(pl => {
+                select.innerHTML += `<option value="${pl}">${pl}</option>`;
+            });
+        }
+
+        function renderEpisodesList(filteredList = episodes) {
+            const container = document.getElementById('episodes-list-container');
+            container.innerHTML = '';
+
+            if(filteredList.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center py-8 text-marrom-600">Nenhum episódio encontrado.</div>`;
+                return;
+            }
+
+            filteredList.forEach(ep => {
+                const isPublic = ep.visibility === 'Público';
+                container.innerHTML += `
+                    <div class="bg-white p-5 rounded-2xl border border-marrom-300 shadow-sm space-y-3">
+                        <div class="flex items-start justify-between">
+                            <div>
+                                <span class="text-xs font-bold px-2.5 py-1 rounded-full ${isPublic ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+                                    ${isPublic ? '🌐 Público' : '🔒 Privado'}
+                                </span>
+                                <h4 class="text-lg font-bold text-marrom-900 mt-2">${ep.title}</h4>
+                                <p class="text-xs text-marrom-600">${ep.groupName} • ${ep.date}</p>
+                            </div>
+                            <button onclick="deleteEpisode('${ep.id}')" class="text-xs text-red-500 hover:text-red-700">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </div>
+
+                        ${ep.audioUrl ? `<audio controls src="${ep.audioUrl}" class="w-full"></audio>` : '<p class="text-xs italic text-marrom-500">Áudio demonstrativo</p>'}
+
+                        <div class="flex items-center justify-between text-xs pt-2 border-t">
+                            <span class="text-marrom-600"><i class="fa-solid fa-folder text-dourado-600 mr-1"></i>${ep.playlist}</span>
+                            <button onclick="toggleVisibility('${ep.id}')" class="font-bold text-vinho-700 hover:underline">
+                                Alternar para ${isPublic ? 'Privado' : 'Público'}
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function filterEpisodes(type) {
+            if(type === 'all') renderEpisodesList(episodes);
+            else if(type === 'public') renderEpisodesList(episodes.filter(e => e.visibility === 'Público'));
+            else if(type === 'private') renderEpisodesList(episodes.filter(e => e.visibility === 'Privado'));
+        }
+
+        function filterByPlaylist(plName) {
+            if(plName === 'all') renderEpisodesList(episodes);
+            else renderEpisodesList(episodes.filter(e => e.playlist === plName));
+        }
+
+        function toggleVisibility(id) {
+            const ep = episodes.find(e => e.id === id);
+            if(ep) {
+                ep.visibility = ep.visibility === 'Público' ? 'Privado' : 'Público';
+                localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
+                renderEpisodesList();
+                renderPublicShowcase();
+            }
+        }
+
+        function deleteEpisode(id) {
+            if(confirm('Tem certeza que deseja excluir este episódio?')) {
+                episodes = episodes.filter(e => e.id !== id);
+                localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
+                renderEpisodesList();
+                renderPublicShowcase();
+            }
+        }
+
+        // VITRINE PÚBLICA
+        function renderPublicShowcase() {
+            const container = document.getElementById('public-showcase-container');
+            container.innerHTML = '';
+
+            const publicEps = episodes.filter(e => e.visibility === 'Público');
+
+            if(publicEps.length === 0) {
+                container.innerHTML = `
+                    <div class="col-span-3 text-center py-12 text-marrom-600">
+                        Nenhum podcast publicado publicamente ainda. Marque um episódio como "Público" na biblioteca!
+                    </div>
+                `;
+                return;
+            }
+
+            publicEps.forEach(ep => {
+                container.innerHTML += `
+                    <div class="bg-white p-6 rounded-2xl border-2 border-emerald-500/30 shadow-md space-y-4 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center space-x-2 text-emerald-600 text-xs font-bold mb-2">
+                                <i class="fa-solid fa-tower-broadcast"></i>
+                                <span>PUBLICADO NA VITRINE</span>
+                            </div>
+                            <h4 class="text-xl font-display font-bold text-marrom-900">${ep.title}</h4>
+                            <p class="text-xs font-bold text-vinho-700 mt-1"><i class="fa-solid fa-users mr-1"></i>${ep.groupName}</p>
+                        </div>
+
+                        ${ep.audioUrl ? `<audio controls src="${ep.audioUrl}" class="w-full"></audio>` : '<p class="text-xs text-marrom-500">Áudio indisponível</p>'}
+
+                        <div class="flex items-center justify-between text-xs text-marrom-600 pt-2 border-t">
+                            <span><i class="fa-solid fa-headphones mr-1"></i>${ep.listens || 0} reproduções</span>
+                            <button onclick="shareLink('${ep.title}')" class="text-vinho-700 font-bold hover:underline">
+                                <i class="fa-solid fa-share-nodes mr-1"></i>Compartilhar
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function shareLink(title) {
+            alert(`Link do episódio '${title}' copiado para a área de transferência!`);
+        }
+
+        // REVISÃO E AUTOAVALIAÇÃO
+        function saveReflection() {
+            const learned = document.getElementById('reflection-learned').value;
+            const improve = document.getElementById('reflection-improve').value;
+            if(!learned && !improve) return;
+
+            localStorage.setItem('vozes_reflection', JSON.stringify({ learned, improve, date: new Date().toLocaleDateString('pt-BR') }));
+            document.getElementById('reflection-status').classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
