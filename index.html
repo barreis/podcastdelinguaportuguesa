@@ -1,1618 +1,1322 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vozes em Pauta — Oficina de Podcast | Língua Portuguesa</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Studio & School Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter & Young Serif/Outfit for Editorial Studio feel -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#641e32">
+<title>Vozes em Pauta | Oficina de Podcast</title>
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        vinho: {
-                            50: '#FDF2F4',
-                            100: '#FCE7EB',
-                            600: '#8A1C34',
-                            700: '#6E1327',
-                            800: '#520B1B',
-                            900: '#3D000E',
-                        },
-                        marrom: {
-                            100: '#EFEAE6',
-                            300: '#C7B8AD',
-                            600: '#6B5244',
-                            700: '#543D32',
-                            800: '#3D2A20',
-                            900: '#281912',
-                        },
-                        creme: {
-                            50: '#FFFDF9',
-                            100: '#FDFBF7',
-                            200: '#F7F0E6',
-                            300: '#EFE3D3',
-                        },
-                        terracota: {
-                            500: '#D96B43',
-                            600: '#C0532B',
-                        },
-                        dourado: {
-                            400: '#F3C15A',
-                            500: '#E5AB35',
-                            600: '#C68E1B',
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        serif: ['Lora', 'serif'],
-                        display: ['Fredoka', 'sans-serif'],
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        /* Acessibilidade & Tipografia Responsiva */
-        :root {
-            --font-scale: 1;
-        }
-        body {
-            font-size: calc(1rem * var(--font-scale));
-            background-color: #FDFBF7;
-            color: #3D2A20;
-            transition: font-size 0.2s ease, background-color 0.3s ease;
-        }
-        .bg-creme-pattern {
-            background-color: #FDFBF7;
-            background-image: radial-gradient(#EFE3D3 0.85px, transparent 0.85px);
-            background-size: 16px 16px;
-        }
-        .btn-vinho {
-            background-color: #6E1327;
-            color: #FFFDF9;
-            transition: all 0.2s ease;
-        }
-        .btn-vinho:hover {
-            background-color: #520B1B;
-            transform: translateY(-1px);
-        }
-        .card-studio {
-            border: 1px solid #EFE3D3;
-            box-shadow: 0 4px 20px -2px rgba(84, 61, 50, 0.08);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .card-studio:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px -4px rgba(110, 19, 39, 0.15);
-            border-color: #D96B43;
-        }
-        /* Custom Scrollbars */
-        ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #F7F0E6;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #C7B8AD;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #6E1327;
-        }
-    </style>
+<style>
+:root {
+  --wine: #641e32;
+  --wine2: #842e47;
+  --brown: #493025;
+  --brown2: #76513e;
+  --cream: #fff8ee;
+  --paper: #f5e9d8;
+  --terracotta: #bd7257;
+  --gold: #d8ad67;
+  --ink: #34251f;
+  --muted: #715e53;
+  --white: #fff;
+  --border: #e5d1bd;
+  --green: #38694c;
+  --shadow: 0 8px 25px #49291b12;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  line-height: 1.6;
+}
+button, input, select, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+button {
+  cursor: pointer;
+  border: 0;
+  border-radius: 12px;
+  padding: 11px 16px;
+  font-weight: 700;
+  transition: transform .15s, opacity .15s;
+}
+button:hover { transform: translateY(-1px); }
+button:disabled { opacity: .45; cursor: not-allowed; transform: none; }
+button:focus-visible, input:focus-visible, select:focus-visible,
+textarea:focus-visible, a:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 3px;
+}
+.primary { background: var(--wine); color: white; }
+.secondary { background: var(--paper); color: var(--brown); }
+.accent { background: var(--terracotta); color: white; }
+.success { background: var(--green); color: white; }
+.danger { background: #f8e4e4; color: #8d2222; }
+.small { padding: 7px 10px; font-size: .9rem; }
+.hidden { display: none !important; }
+header {
+  background: var(--wine);
+  color: white;
+  padding: 18px 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+.brand { display: flex; gap: 12px; align-items: center; }
+.brand-icon {
+  width: 48px; height: 48px; display: grid; place-items: center;
+  border-radius: 15px; background: #ffffff20; font-size: 27px;
+}
+.brand h1 { margin: 0; font-size: 1.25rem; }
+.brand p { margin: 0; opacity: .85; font-size: .85rem; }
+header .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+header button { background: #ffffff19; color: white; }
+main { max-width: 1200px; padding: 25px 18px 50px; margin: auto; }
+.hero {
+  background: linear-gradient(130deg, var(--brown), var(--wine));
+  color: white;
+  padding: clamp(25px, 5vw, 48px);
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 25px;
+}
+.hero:after {
+  content: "♫"; position: absolute; right: 4%; top: -45px;
+  font-size: 190px; color: #ffffff0d; transform: rotate(12deg);
+}
+.eyebrow {
+  color: var(--gold); text-transform: uppercase;
+  letter-spacing: 2px; font-size: .8rem; font-weight: 800;
+}
+.hero h2 { font-size: clamp(1.7rem, 5vw, 3rem); line-height: 1.15; margin: 10px 0; }
+.hero p { max-width: 700px; }
+.signature { color: #f4d6a6; font-weight: 800; margin-top: 22px; }
+.section-title { margin: 28px 0 14px; }
+.section-title h2 { margin-bottom: 3px; font-size: 1.4rem; }
+.section-title p { margin-top: 0; color: var(--muted); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  gap: 16px;
+}
+.card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+}
+.menu-card {
+  text-align: left; width: 100%; color: var(--ink);
+  background: white; border: 1px solid var(--border);
+  min-height: 165px; padding: 21px;
+}
+.menu-card .emoji { font-size: 2rem; display: block; margin-bottom: 8px; }
+.menu-card strong { display: block; color: var(--wine); font-size: 1.1rem; }
+.menu-card span:last-child { display: block; color: var(--muted); font-weight: 400; margin-top: 5px; }
+.menu-card:hover { border-color: var(--terracotta); }
+.view { margin-top: 25px; }
+.view h2 { color: var(--wine); }
+.panel {
+  background: white; border: 1px solid var(--border);
+  border-radius: 18px; padding: clamp(17px, 4vw, 28px);
+}
+.form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.field.full { grid-column: 1 / -1; }
+label { font-weight: 700; color: var(--brown); }
+input, select, textarea {
+  width: 100%; min-width: 0; border: 1px solid #cdb7a4;
+  border-radius: 10px; padding: 12px; background: #fffdfa; color: var(--ink);
+}
+textarea { min-height: 100px; resize: vertical; }
+.actions { display: flex; gap: 9px; flex-wrap: wrap; margin-top: 17px; }
+.notice {
+  padding: 13px 15px; border-radius: 12px;
+  background: #f7eee0; border-left: 4px solid var(--terracotta);
+  color: var(--brown); margin: 15px 0;
+}
+.notice.error { background: #fbe9e9; border-color: #a22; }
+.notice.good { background: #eaf4ec; border-color: var(--green); }
+.output {
+  white-space: pre-wrap; overflow-wrap: anywhere;
+  background: #fffaf4; border: 1px solid var(--border);
+  padding: 20px; border-radius: 12px; margin-top: 18px;
+}
+.episode { display: flex; flex-direction: column; gap: 10px; }
+.episode h3 { margin: 0; color: var(--wine); overflow-wrap: anywhere; }
+.episode audio { width: 100%; }
+.tag {
+  display: inline-block; padding: 4px 9px; border-radius: 20px;
+  background: var(--paper); color: var(--brown); font-size: .8rem;
+  font-weight: 800; margin-right: 5px;
+}
+.tag.public { background: #e6f2e7; color: #285c36; }
+.tag.private { background: #f6e6e9; color: var(--wine); }
+.divider { height: 1px; background: var(--border); margin: 20px 0; }
+footer { text-align: center; padding: 25px; color: var(--muted); font-size: .9rem; }
+.empty { text-align: center; padding: 28px; color: var(--muted); }
+#status { margin-top: 12px; font-weight: 700; }
+#timer { font-size: 1.7rem; font-weight: 800; color: var(--wine); font-variant-numeric: tabular-nums; }
+.auth-wrap { max-width: 600px; margin: 20px auto; }
+details { margin-top: 12px; }
+summary { cursor: pointer; font-weight: 700; }
+a { color: var(--wine); }
+@media(max-width: 600px) {
+  .form-grid { grid-template-columns: 1fr; }
+  .field.full { grid-column: auto; }
+  header { padding: 14px; }
+  main { padding: 18px 12px 35px; }
+  .hero { border-radius: 17px; }
+}
+</style>
 </head>
-<body class="bg-creme-pattern min-h-screen flex flex-col font-sans antialiased text-marrom-800">
 
-    <!-- BARRA SUPERIOR DE ACESSIBILIDADE E GRUPO ATIVO -->
-    <header class="bg-marrom-900 text-creme-100 border-b-4 border-dourado-500 sticky top-0 z-50 shadow-md">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-            
-            <!-- Logotipo e Título Principal -->
-            <div class="flex items-center space-x-3 cursor-pointer" onclick="navigateTo('home')">
-                <div class="w-10 h-10 rounded-full bg-vinho-700 border-2 border-dourado-400 flex items-center justify-center text-dourado-400 font-bold text-xl shadow-inner">
-                    <i class="fa-solid fa-microphone-lines"></i>
-                </div>
-                <div>
-                    <span class="font-display font-bold text-lg leading-tight tracking-wide block text-creme-50">VOZES EM PAUTA</span>
-                    <span class="text-xs text-dourado-400 block font-medium">Oficina de Podcast • Língua Portuguesa</span>
-                </div>
-            </div>
+<body>
+<header>
+  <div class="brand">
+    <div class="brand-icon" aria-hidden="true">🎙️</div>
+    <div>
+      <h1>Vozes em Pauta</h1>
+      <p>Oficina de podcast · Língua Portuguesa</p>
+    </div>
+  </div>
+  <div class="header-actions">
+    <span id="userLabel" aria-live="polite"></span>
+    <button id="logoutBtn" class="hidden" type="button">Sair</button>
+  </div>
+</header>
 
-            <!-- Controles de Acessibilidade + Login Info -->
-            <div class="flex items-center space-x-2 sm:space-x-4">
-                
-                <!-- Ajuste de Fonte -->
-                <div class="flex items-center bg-marrom-800 rounded-lg p-1 border border-marrom-700">
-                    <button onclick="changeFontSize(-0.1)" title="Diminuir texto" class="px-2 py-1 text-xs font-bold text-creme-200 hover:bg-marrom-700 rounded transition" aria-label="Diminuir fonte">-A</button>
-                    <button onclick="resetFontSize()" title="Tamanho normal" class="px-2 py-1 text-xs font-bold text-dourado-400 hover:bg-marrom-700 rounded transition" aria-label="Resetar fonte">A</button>
-                    <button onclick="changeFontSize(0.1)" title="Aumentar texto" class="px-2 py-1 text-xs font-bold text-creme-200 hover:bg-marrom-700 rounded transition" aria-label="Aumentar fonte">+A</button>
-                </div>
+<main>
+  <section class="hero">
+    <div class="eyebrow">Sua voz tem espaço aqui</div>
+    <h2>Transforme palavras em vozes.<br> E vozes em histórias.</h2>
+    <p>Planeje, escreva, grave e compartilhe seu podcast. Cada grupo tem espaço para experimentar, colaborar e descobrir o poder da comunicação.</p>
+    <div class="signature">Professora Bárbara Vitória — Língua Portuguesa</div>
+  </section>
 
-                <!-- Status do Grupo / Login / Perfil -->
-                <div id="user-status-container">
-                    <!-- Preenchido dinamicamente via JS -->
-                </div>
-            </div>
+  <section id="authView" class="auth-wrap">
+    <div class="panel">
+      <h2>Entre no estúdio</h2>
+      <p>Crie a identificação do seu grupo ou entre com uma conta já criada neste navegador.</p>
+      <div class="form-grid">
+        <div class="field full">
+          <label for="authMode">O que deseja fazer?</label>
+          <select id="authMode">
+            <option value="create">Criar grupo</option>
+            <option value="login">Entrar em um grupo</option>
+          </select>
         </div>
-    </header>
-
-    <!-- MENUS DE NAVEGAÇÃO RÁPIDA (HABILITADOS APÓS LOGIN OU VISITANTE) -->
-    <nav class="bg-vinho-800 text-creme-100 shadow-md border-b border-vinho-900 hidden" id="main-nav-bar">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center overflow-x-auto space-x-1 py-2 text-sm font-medium">
-            <button onclick="navigateTo('home')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-house mr-1.5"></i>Início</button>
-            <button onclick="navigateTo('roteiros')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-pen-nib mr-1.5"></i>Criar Roteiro</button>
-            <button onclick="navigateTo('estudio')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-microphone mr-1.5"></i>Estúdio</button>
-            <button onclick="navigateTo('biblioteca')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-folder-closed mr-1.5"></i>Meus Episódios</button>
-            <button onclick="navigateTo('vitrine')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-podcast mr-1.5"></i>Vitrine Pública</button>
-            <button onclick="navigateTo('revisao')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-clipboard-check mr-1.5"></i>Revisão & Avaliação</button>
-            <button onclick="navigateTo('guia')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-book-bookmark mr-1.5"></i>Guia da Oficina</button>
-            <button onclick="navigateTo('perfil')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap text-dourado-400 font-bold"><i class="fa-solid fa-id-card mr-1.5"></i>Perfil do Grupo</button>
+        <div class="field full" id="groupNameField">
+          <label for="groupName">Nome do grupo</label>
+          <input id="groupName" maxlength="70" placeholder="Ex.: Vozes da Juventude">
         </div>
-    </nav>
-
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="app-viewport">
-        
-        <!-- SEÇÃO 1: TELA INICIAL (HOME) -->
-        <section id="sec-home" class="space-y-8 animate-fade-in">
-            
-            <!-- Banner Motivacional Assinado (VISÍVEL SOMENTE ANTES DO LOGIN) -->
-            <div id="professora-banner" class="bg-gradient-to-r from-vinho-800 via-vinho-700 to-marrom-800 text-creme-50 rounded-2xl p-6 sm:p-10 shadow-xl border-2 border-dourado-500/40 relative overflow-hidden">
-                <div class="absolute -right-10 -bottom-10 opacity-10 text-creme-100 text-9xl pointer-events-none">
-                    <i class="fa-solid fa-quote-right"></i>
-                </div>
-                <div class="max-w-3xl space-y-4 relative z-10">
-                    <span class="inline-block bg-dourado-500 text-marrom-900 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-sm">
-                        Mensagem da Professora
-                    </span>
-                    <h1 class="text-3xl sm:text-5xl font-display font-bold text-creme-50 leading-tight">
-                        SUA IDEIA MERECE SER OUVIDA
-                    </h1>
-                    <p class="text-lg sm:text-xl font-serif italic text-creme-200">
-                        "Transforme palavras em vozes. E vozes em histórias."
-                    </p>
-                    <p class="text-sm sm:text-base text-creme-100 leading-relaxed font-light">
-                        Planeje, escreva, grave e compartilhe seu podcast. Aqui, cada grupo tem espaço para experimentar, colaborar e descobrir o poder da comunicação e da linguagem falada.
-                    </p>
-                    <div class="pt-4 border-t border-vinho-600/60 flex items-center space-x-3">
-                        <div class="w-12 h-12 rounded-full bg-terracota-500 border-2 border-dourado-400 flex items-center justify-center font-bold text-xl text-creme-50 shadow-md">
-                            PBV
-                        </div>
-                        <div>
-                            <p class="font-bold text-creme-50 font-display text-base">Professora Bárbara Vitória</p>
-                            <p class="text-xs text-dourado-400">Língua Portuguesa • ✦ Aprender, criar, revisar e compartilhar.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- DASHBOARD DE BOAS-VINDAS DO GRUPO (VISÍVEL SOMENTE APÓS O LOGIN) -->
-            <div id="group-welcome-banner" class="hidden bg-gradient-to-r from-vinho-900 via-vinho-800 to-marrom-900 text-creme-50 rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-dourado-500">
-                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-                    <div>
-                        <span class="bg-dourado-500 text-marrom-900 text-xs font-bold uppercase px-3 py-1 rounded-full">Painel da Equipe</span>
-                        <h1 class="text-2xl sm:text-4xl font-display font-bold mt-2" id="welcome-team-name">Bem-vindos!</h1>
-                        <p class="text-xs sm:text-sm text-creme-200 mt-1">Sua oficina de podcast está pronta. Escolha uma das etapas abaixo para continuar o seu projeto.</p>
-                    </div>
-                    <div class="flex items-center space-x-3">
-                        <button onclick="navigateTo('perfil')" class="bg-creme-100 hover:bg-creme-200 text-marrom-900 font-bold text-xs px-4 py-2.5 rounded-xl border border-dourado-400 transition flex items-center space-x-2">
-                            <i class="fa-solid fa-id-card text-vinho-700"></i>
-                            <span>Ver Perfil & Configurações</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- CARD DE AUTENTICAÇÃO E RECUPERAÇÃO DO GRUPO (ANTES DO LOGIN) -->
-            <div id="auth-box" class="bg-white border-2 border-marrom-300 rounded-2xl p-6 shadow-md max-w-xl mx-auto">
-                
-                <!-- Abas de Navegação do Formulário -->
-                <div class="flex border-b border-marrom-200 mb-6">
-                    <button id="tab-btn-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700">
-                        <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Entrar
-                    </button>
-                    <button id="tab-btn-register" onclick="switchAuthTab('register')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-marrom-600 hover:text-marrom-900">
-                        <i class="fa-solid fa-user-plus mr-1.5"></i>Criar Grupo
-                    </button>
-                    <button id="tab-btn-reset" onclick="switchAuthTab('reset')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-marrom-600 hover:text-marrom-900">
-                        <i class="fa-solid fa-key mr-1.5"></i>Redefinir Senha
-                    </button>
-                </div>
-
-                <!-- 1. FORMULÁRIO DE LOGIN -->
-                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="login-username">Usuário do Grupo</label>
-                        <input type="text" id="login-username" required placeholder="Ex: palavraviva01" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="login-password">Senha</label>
-                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
-                        <i class="fa-solid fa-right-to-bracket"></i>
-                        <span>Entrar na Conta do Grupo</span>
-                    </button>
-                </form>
-
-                <!-- 2. FORMULÁRIO DE CADASTRO -->
-                <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-team-name">Nome da Equipe / Grupo</label>
-                        <input type="text" id="reg-team-name" required placeholder="Ex: Equipe Palavra Viva" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-username">Usuário do Grupo (Login)</label>
-                        <input type="text" id="reg-username" required placeholder="Ex: palavraviva01" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-email">E-mail para Recuperação de Senha (Opcional)</label>
-                        <input type="email" id="reg-email" placeholder="grupo@escola.edu.br" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-password">Criar Senha</label>
-                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
-                        <i class="fa-solid fa-user-check"></i>
-                        <span>Cadastrar Meu Grupo</span>
-                    </button>
-                </form>
-
-                <!-- 3. FORMULÁRIO DE REDEFINIÇÃO DE SENHA -->
-                <form id="form-reset" onsubmit="handleResetPassword(event)" class="space-y-4 hidden">
-                    <p class="text-xs text-marrom-600">Informe o e-mail ou o usuário cadastrado para redefinir a senha do seu grupo.</p>
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reset-identifier">E-mail ou Usuário do Grupo</label>
-                        <input type="text" id="reset-identifier" required placeholder="digite o e-mail ou usuário" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reset-new-password">Nova Senha</label>
-                        <input type="password" id="reset-new-password" required placeholder="Nova senha" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
-                    </div>
-                    <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
-                        <i class="fa-solid fa-rotate-left"></i>
-                        <span>Redefinir Senha Agora</span>
-                    </button>
-                </form>
-
-            </div>
-
-            <!-- MENU PRINCIPAL EM CARTÕES ILUSTRADOS GRANDES -->
-            <div>
-                <h2 class="text-2xl font-display font-bold text-marrom-900 mb-6 flex items-center space-x-2">
-                    <i class="fa-solid fa-compass text-terracota-500"></i>
-                    <span>Menu da Oficina</span>
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    
-                    <!-- Cartão 1: Criar Roteiro -->
-                    <div onclick="navigateTo('roteiros')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-vinho-700">
-                        <div>
-                            <div class="w-14 h-14 rounded-xl bg-vinho-50 text-vinho-700 flex items-center justify-center text-2xl mb-4 border border-vinho-100">
-                                <i class="fa-solid fa-pen-fancy"></i>
-                            </div>
-                            <span class="text-xs font-bold text-terracota-500 uppercase tracking-wider">Etapa 1</span>
-                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">1. Criar Roteiro</h3>
-                            <p class="text-sm text-marrom-600 leading-relaxed">
-                                Planeje o episódio, defina o tema, formato, tom e gere sugestões automáticas de falas para a equipe.
-                            </p>
-                        </div>
-                        <div class="mt-6 flex items-center text-xs font-bold text-vinho-700">
-                            <span>Acessar Gerador</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </div>
-                    </div>
-
-                    <!-- Cartão 2: Estúdio -->
-                    <div onclick="navigateTo('estudio')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-terracota-500">
-                        <div>
-                            <div class="w-14 h-14 rounded-xl bg-terracota-50 text-terracota-600 flex items-center justify-center text-2xl mb-4 border border-terracota-100">
-                                <i class="fa-solid fa-microphone-lines"></i>
-                            </div>
-                            <span class="text-xs font-bold text-terracota-500 uppercase tracking-wider">Etapa 2</span>
-                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">2. Estúdio de Gravação</h3>
-                            <p class="text-sm text-marrom-600 leading-relaxed">
-                                Grave, ouça prévias, ajuste volumes, associe roteiros e salve seus episódios com total controle.
-                            </p>
-                        </div>
-                        <div class="mt-6 flex items-center text-xs font-bold text-terracota-600">
-                            <span>Abrir Estúdio</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </div>
-                    </div>
-
-                    <!-- Cartão 3: Meus Episódios -->
-                    <div onclick="navigateTo('biblioteca')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-dourado-500">
-                        <div>
-                            <div class="w-14 h-14 rounded-xl bg-amber-50 text-dourado-600 flex items-center justify-center text-2xl mb-4 border border-amber-100">
-                                <i class="fa-solid fa-compact-disc"></i>
-                            </div>
-                            <span class="text-xs font-bold text-dourado-600 uppercase tracking-wider">Organização</span>
-                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">3. Meus Episódios</h3>
-                            <p class="text-sm text-marrom-600 leading-relaxed">
-                                Organize produções em playlists temáticas, controle a visibilidade privada ou pública e baixe arquivos.
-                            </p>
-                        </div>
-                        <div class="mt-6 flex items-center text-xs font-bold text-dourado-600">
-                            <span>Ver Biblioteca</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </div>
-                    </div>
-
-                    <!-- Cartão 4: Vitrine Pública -->
-                    <div onclick="navigateTo('vitrine')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-emerald-600">
-                        <div>
-                            <div class="w-14 h-14 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-2xl mb-4 border border-emerald-100">
-                                <i class="fa-solid fa-tower-broadcast"></i>
-                            </div>
-                            <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Compartilhamento</span>
-                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">4. Vitrine Pública</h3>
-                            <p class="text-sm text-marrom-600 leading-relaxed">
-                                Ouça e prestigie os podcasts que foram publicados abertamente pelas outras equipes da turma.
-                            </p>
-                        </div>
-                        <div class="mt-6 flex items-center text-xs font-bold text-emerald-600">
-                            <span>Explorar Vitrine</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </div>
-                    </div>
-
-                    <!-- Cartão 5: Revisão e Avaliação -->
-                    <div onclick="navigateTo('revisao')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-indigo-600">
-                        <div>
-                            <div class="w-14 h-14 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-2xl mb-4 border border-indigo-100">
-                                <i class="fa-solid fa-clipboard-check"></i>
-                            </div>
-                            <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Reflexão</span>
-                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">5. Revisão & Reflexão</h3>
-                            <p class="text-sm text-marrom-600 leading-relaxed">
-                                Avalie a qualidade do conteúdo, revise a linguagem com o checklist e registre o aprendizado do grupo.
-                            </p>
-                        </div>
-                        <div class="mt-6 flex items-center text-xs font-bold text-indigo-600">
-                            <span>Fazer Revisão</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </div>
-                    </div>
-
-                    <!-- Cartão 6: Guia da Oficina -->
-                    <div onclick="navigateTo('guia')" class="card-studio bg-white rounded-2xl p-6 cursor-pointer flex flex-col justify-between border-t-4 border-marrom-600">
-                        <div>
-                            <div class="w-14 h-14 rounded-xl bg-marrom-100 text-marrom-700 flex items-center justify-center text-2xl mb-4 border border-marrom-300">
-                                <i class="fa-solid fa-graduation-cap"></i>
-                            </div>
-                            <span class="text-xs font-bold text-marrom-600 uppercase tracking-wider">Metodologia</span>
-                            <h3 class="text-xl font-display font-bold text-marrom-900 mt-1 mb-2">6. Guia da Oficina</h3>
-                            <p class="text-sm text-marrom-600 leading-relaxed">
-                                Consulte as instruções pedagógicas, funções da equipe, etapas do projeto e dicas da professora.
-                            </p>
-                        </div>
-                        <div class="mt-6 flex items-center text-xs font-bold text-marrom-700">
-                            <span>Ler Manual</span>
-                            <i class="fa-solid fa-arrow-right ml-2"></i>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO: PERFIL E CONFIGURAÇÕES DO GRUPO -->
-        <section id="sec-perfil" class="hidden space-y-6">
-            <div class="border-b border-marrom-300 pb-4">
-                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                    <i class="fa-solid fa-id-card text-dourado-600"></i>
-                    <span>Perfil e Dados do Grupo</span>
-                </h2>
-                <p class="text-sm text-marrom-600">Gerencie informações do seu grupo, e-mail de recuperação e senha</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                <!-- Dados do Grupo -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
-                        <i class="fa-solid fa-users text-vinho-700"></i>
-                        <span>Informações da Conta</span>
-                    </h3>
-
-                    <form id="form-update-profile" onsubmit="handleUpdateProfile(event)" class="space-y-4">
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome da Equipe</label>
-                            <input type="text" id="profile-team-name" required class="w-full p-2.5 rounded-lg border border-marrom-300 text-sm bg-creme-50">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome de Usuário (Login)</label>
-                            <input type="text" id="profile-username" readonly class="w-full p-2.5 rounded-lg border border-marrom-200 text-sm bg-gray-100 font-mono text-marrom-600 cursor-not-allowed">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">E-mail para Recuperação de Senha</label>
-                            <input type="email" id="profile-email" placeholder="grupo@escola.edu.br" class="w-full p-2.5 rounded-lg border border-marrom-300 text-sm bg-creme-50">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Integrantes da Equipe (Opcional)</label>
-                            <input type="text" id="profile-members" placeholder="Ex: Ana, Bruno, Carlos, Daniela" class="w-full p-2.5 rounded-lg border border-marrom-300 text-sm bg-creme-50">
-                        </div>
-
-                        <button type="submit" class="btn-vinho py-2.5 px-6 rounded-lg text-sm font-bold flex items-center space-x-2">
-                            <i class="fa-solid fa-floppy-disk"></i>
-                            <span>Salvar Alterações do Perfil</span>
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Estatísticas e Resumo do Grupo -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
-                        <i class="fa-solid fa-chart-pie text-terracota-500"></i>
-                        <span>Resumo do Grupo</span>
-                    </h3>
-
-                    <div class="space-y-3 text-sm">
-                        <div class="flex justify-between items-center p-3 bg-creme-100 rounded-lg">
-                            <span class="font-medium text-marrom-800"><i class="fa-solid fa-file-pen mr-2 text-vinho-700"></i>Roteiros Salvos:</span>
-                            <span id="stat-scripts-count" class="font-bold text-vinho-800">0</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-creme-100 rounded-lg">
-                            <span class="font-medium text-marrom-800"><i class="fa-solid fa-microphone mr-2 text-terracota-500"></i>Episódios Gravados:</span>
-                            <span id="stat-episodes-count" class="font-bold text-terracota-600">0</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-creme-100 rounded-lg">
-                            <span class="font-medium text-marrom-800"><i class="fa-solid fa-tower-broadcast mr-2 text-emerald-600"></i>Episódios Públicos:</span>
-                            <span id="stat-public-count" class="font-bold text-emerald-600">0</span>
-                        </div>
-                    </div>
-
-                    <div class="pt-4 border-t">
-                        <button onclick="logoutUser()" class="w-full bg-red-100 hover:bg-red-200 text-red-800 py-2.5 px-4 rounded-lg font-bold text-sm flex items-center justify-center space-x-2 transition">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                            <span>Sair da Conta do Grupo</span>
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- SEÇÃO 2: GERADOR INTELIGENTE DE ROTEIROS -->
-        <section id="sec-roteiros" class="hidden space-y-6">
-            <div class="flex items-center justify-between border-b border-marrom-300 pb-4">
-                <div>
-                    <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                        <i class="fa-solid fa-pen-fancy text-terracota-500"></i>
-                        <span>Gerador Inteligente de Roteiros</span>
-                    </h2>
-                    <p class="text-sm text-marrom-600">Preencha os detalhes e o sistema criará uma estrutura guiada para a sua fala</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- FORMULÁRIO DE ENTRADA -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
-                        <i class="fa-solid fa-sliders text-vinho-700"></i>
-                        <span>Informações do Podcast</span>
-                    </h3>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Título Provisório</label>
-                        <input type="text" id="script-title" placeholder="Ex: Vozes da Literatura Escolar" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Tema Principal</label>
-                        <input type="text" id="script-theme" placeholder="Ex: A importância das crônicas no cotidiano" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Formato</label>
-                            <select id="script-format" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
-                                <option value="Entrevista">Entrevista</option>
-                                <option value="Debate">Debate</option>
-                                <option value="Conversa">Conversa Descontraída</option>
-                                <option value="Notícia">Jornalístico / Notícia</option>
-                                <option value="Crônica Sonora">Crônica Sonora</option>
-                                <option value="Contação de Histórias">Contação de Histórias</option>
-                                <option value="Educativo">Podcast Educativo</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Duração Est.</label>
-                            <select id="script-duration" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
-                                <option value="3 minutos">3 minutos</option>
-                                <option value="5 minutos">5 minutos</option>
-                                <option value="8 minutos">8 minutos</option>
-                                <option value="10 minutos">10 minutos</option>
-                                <option value="15 minutos">15 minutos</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Apresentadores (1 a 5)</label>
-                            <input type="number" id="script-hosts" min="1" max="5" value="2" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Tom de Linguagem</label>
-                            <select id="script-tone" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
-                                <option value="Descontraído">Descontraído</option>
-                                <option value="Jornalístico">Jornalístico</option>
-                                <option value="Formal">Formal</option>
-                                <option value="Investigativo">Investigativo</option>
-                                <option value="Bem-humorado">Bem-humorado</option>
-                                <option value="Poético">Poético</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Público-Alvo</label>
-                        <input type="text" id="script-audience" placeholder="Ex: Estudantes do Ensino Fundamental II" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Convidados (se houver)</label>
-                        <input type="text" id="script-guests" placeholder="Ex: Professor de História / Aluno convidado" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Ideias Principais & Tópicos</label>
-                        <textarea id="script-ideas" rows="3" placeholder="Ex: Conceito de crônica, exemplos de Machado de Assis, relato pessoal..." class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none"></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Mensagem de Encerramento</label>
-                        <input type="text" id="script-closing" placeholder="Ex: Reflita sobre o que lê no seu dia a dia!" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-                    </div>
-
-                    <button onclick="generateScript()" class="w-full btn-vinho font-bold py-3 px-4 rounded-lg text-sm flex items-center justify-center space-x-2 shadow-md">
-                        <i class="fa-solid fa-wand-magic-sparkles text-dourado-400"></i>
-                        <span>Gerar Roteiro Estruturado</span>
-                    </button>
-                </div>
-
-                <!-- PREVIEW E EDIÇÃO DO ROTEIRO -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <div class="flex items-center justify-between border-b pb-3 mb-4">
-                            <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider flex items-center space-x-2">
-                                <i class="fa-solid fa-file-lines text-terracota-500"></i>
-                                <span>Roteiro Gerado</span>
-                            </h3>
-                            <div class="flex items-center space-x-2">
-                                <button onclick="copyScriptToClipboard()" title="Copiar Texto" class="text-xs bg-creme-200 hover:bg-creme-300 text-marrom-800 px-2.5 py-1.5 rounded font-medium flex items-center space-x-1">
-                                    <i class="fa-solid fa-copy"></i>
-                                    <span>Copiar</span>
-                                </button>
-                                <button onclick="saveGeneratedScript()" title="Salvar Roteiro" class="text-xs bg-vinho-700 hover:bg-vinho-800 text-white px-3 py-1.5 rounded font-medium flex items-center space-x-1 shadow-sm">
-                                    <i class="fa-solid fa-floppy-disk"></i>
-                                    <span>Salvar no Projeto</span>
-                                </button>
-                            </div>
-                        </div>
-
-                        <!-- Edição livre do roteiro gerado -->
-                        <div id="script-output-container" class="space-y-4">
-                            <textarea id="script-editor" rows="20" class="w-full p-4 rounded-xl border border-marrom-200 font-serif text-sm text-marrom-900 bg-creme-50 leading-relaxed focus:ring-2 focus:ring-vinho-700 outline-none" placeholder="Preencha o formulário ao lado e clique em 'Gerar Roteiro Estruturado' para visualizar aqui a sua minuta editável..."></textarea>
-                        </div>
-                    </div>
-
-                    <div class="mt-4 pt-3 border-t text-xs text-marrom-600 flex items-center justify-between">
-                        <span><i class="fa-solid fa-info-circle text-dourado-600 mr-1"></i>O roteiro é um ponto de partida. Edite como desejar antes de gravar.</span>
-                        <span id="script-saved-badge" class="hidden text-emerald-700 font-bold"><i class="fa-solid fa-check mr-1"></i>Salvo!</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO 3: ESTÚDIO DE GRAVAÇÃO ONLINE -->
-        <section id="sec-estudio" class="hidden space-y-6">
-            <div class="flex items-center justify-between border-b border-marrom-300 pb-4">
-                <div>
-                    <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                        <i class="fa-solid fa-microphone-lines text-terracota-500"></i>
-                        <span>Estúdio de Gravação Online</span>
-                    </h2>
-                    <p class="text-sm text-marrom-600">Grave áudio diretamente pelo navegador, escute e salve no seu projeto</p>
-                </div>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                
-                <!-- PAINEL DE CONTROLE DE ÁUDIO -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-6">
-                    
-                    <!-- Configurações Rápidas do Episódio -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-creme-100 p-4 rounded-xl border border-creme-300">
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome do Episódio</label>
-                            <input type="text" id="studio-ep-title" value="Episódio 1 — Roteiro de Língua Portuguesa" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Visibilidade</label>
-                            <select id="studio-ep-visibility" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
-                                <option value="Privado">🔒 Privado — Somente o Grupo</option>
-                                <option value="Público">🌐 Público — Disponível na Vitrine</option>
-                            </select>
-                        </div>
-                        <div class="sm:col-span-2">
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Associar a Roteiro Existente</label>
-                            <select id="studio-ep-script-link" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
-                                <option value="">-- Selecionar um roteiro do grupo (Opcional) --</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- MESA DE SOM / VISUALIZADOR CANVAS DE GRAVAÇÃO -->
-                    <div class="bg-marrom-900 rounded-2xl p-6 text-creme-100 flex flex-col items-center justify-center space-y-4 border-2 border-dourado-500 shadow-inner relative overflow-hidden">
-                        
-                        <!-- Indicador REC -->
-                        <div class="flex items-center space-x-2">
-                            <div id="rec-dot" class="w-3.5 h-3.5 rounded-full bg-gray-500"></div>
-                            <span id="rec-status-text" class="text-xs uppercase tracking-widest font-bold text-creme-300">Estúdio Pronto</span>
-                        </div>
-
-                        <!-- Timer em destaque -->
-                        <div id="studio-timer" class="font-mono text-4xl sm:text-5xl font-bold tracking-wider text-dourado-400">
-                            00:00
-                        </div>
-
-                        <!-- Visualizador Canvas da Onda Sonora -->
-                        <div class="w-full h-20 bg-marrom-800 rounded-xl overflow-hidden border border-marrom-700">
-                            <canvas id="audio-visualizer-canvas" class="w-full h-full"></canvas>
-                        </div>
-
-                        <!-- Botões de Ação do Microfone -->
-                        <div class="flex items-center space-x-3 pt-2">
-                            <button id="btn-start-rec" onclick="startRecording()" class="bg-terracota-500 hover:bg-terracota-600 text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 shadow-lg transition">
-                                <i class="fa-solid fa-circle text-xs text-red-200"></i>
-                                <span>GRAVAR</span>
-                            </button>
-
-                            <button id="btn-stop-rec" onclick="stopRecording()" disabled class="bg-gray-700 opacity-50 cursor-not-allowed text-white px-5 py-2.5 rounded-xl font-bold text-sm flex items-center space-x-2 transition">
-                                <i class="fa-solid fa-square"></i>
-                                <span>PARAR</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- REPRODUTOR DA PRÉVIA E SALVAMENTO -->
-                    <div id="preview-audio-container" class="hidden bg-creme-50 p-4 rounded-xl border border-marrom-300 space-y-3">
-                        <div class="flex items-center justify-between">
-                            <span class="text-xs font-bold text-marrom-800 uppercase flex items-center space-x-1">
-                                <i class="fa-solid fa-headphones text-vinho-700"></i>
-                                <span>Prévia do Áudio Gravado</span>
-                            </span>
-                            <span class="text-xs text-marrom-600" id="audio-format-badge">Formato WebM/Ogg</span>
-                        </div>
-                        
-                        <audio id="audio-preview" controls class="w-full"></audio>
-
-                        <div class="flex flex-wrap gap-2 pt-2">
-                            <button onclick="saveRecordedEpisode()" class="btn-vinho flex-1 py-2.5 px-4 rounded-lg text-sm font-bold flex items-center justify-center space-x-2">
-                                <i class="fa-solid fa-cloud-arrow-up"></i>
-                                <span>Salvar no Projeto</span>
-                            </button>
-                            <button onclick="downloadEpisodeAudio()" class="bg-marrom-700 hover:bg-marrom-800 text-creme-50 py-2.5 px-4 rounded-lg text-sm font-bold flex items-center justify-center space-x-2">
-                                <i class="fa-solid fa-download"></i>
-                                <span>Baixar Áudio</span>
-                            </button>
-                            <button onclick="clearPreview()" class="bg-gray-200 hover:bg-gray-300 text-marrom-800 py-2.5 px-3 rounded-lg text-sm font-medium">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                </div>
-
-                <!-- CONSULTA RÁPIDA DE ROTEIRO NO ESTÚDIO -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm flex flex-col justify-between">
-                    <div>
-                        <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 mb-3 flex items-center space-x-2">
-                            <i class="fa-solid fa-scroll text-vinho-700"></i>
-                            <span>Consulta de Roteiro em Estúdio</span>
-                        </h3>
-                        <p class="text-xs text-marrom-600 mb-3">Leia suas falas durante a gravação sem mudar de tela.</p>
-                        
-                        <div id="studio-script-display" class="bg-creme-50 p-4 rounded-xl border border-marrom-200 text-xs font-serif leading-relaxed text-marrom-900 max-h-96 overflow-y-auto">
-                            <em>Nenhum roteiro selecionado no momento. Você pode selecionar um no menu acima ou criar um no módulo 'Criar Roteiro'.</em>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- SEÇÃO 4: BIBLIOTECA DE EPISÓDIOS E PLAYLISTS -->
-        <section id="sec-biblioteca" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-marrom-300 pb-4 gap-4">
-                <div>
-                    <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                        <i class="fa-solid fa-compact-disc text-dourado-600"></i>
-                        <span>Meus Episódios e Playlists</span>
-                    </h2>
-                    <p class="text-sm text-marrom-600">Gerencie todas as gravações e coleções da sua equipe</p>
-                </div>
-                <button onclick="openCreatePlaylistModal()" class="btn-vinho px-4 py-2 rounded-lg text-sm font-bold flex items-center space-x-2">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>Criar Nova Playlist</span>
-                </button>
-            </div>
-
-            <!-- FILTROS E ABAS -->
-            <div class="flex flex-wrap items-center justify-between gap-4 bg-creme-100 p-3 rounded-xl border border-marrom-200">
-                <div class="flex items-center space-x-2 overflow-x-auto py-1">
-                    <button onclick="filterEpisodes('all')" class="filter-ep-btn bg-vinho-700 text-white text-xs px-3 py-1.5 rounded-lg font-bold">Todos</button>
-                    <button onclick="filterEpisodes('public')" class="filter-ep-btn bg-white hover:bg-vinho-50 text-marrom-800 text-xs px-3 py-1.5 rounded-lg font-medium border">🌐 Públicos</button>
-                    <button onclick="filterEpisodes('private')" class="filter-ep-btn bg-white hover:bg-vinho-50 text-marrom-800 text-xs px-3 py-1.5 rounded-lg font-medium border">🔒 Privados</button>
-                </div>
-
-                <div class="flex items-center space-x-2">
-                    <span class="text-xs font-bold text-marrom-700">Playlist:</span>
-                    <select id="playlist-filter-select" onchange="filterByPlaylist(this.value)" class="text-xs px-2.5 py-1.5 rounded-lg border border-marrom-300 bg-white">
-                        <option value="all">Todas as Playlists</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- LISTA DE EPISÓDIOS DA EQUIPE -->
-            <div id="episodes-list-container" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <!-- Inserido dinamicamente via JS -->
-            </div>
-        </section>
-
-        <!-- SEÇÃO 5: VITRINE PÚBLICA -->
-        <section id="sec-vitrine" class="hidden space-y-6">
-            <div class="border-b border-marrom-300 pb-4">
-                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                    <i class="fa-solid fa-tower-broadcast text-emerald-600"></i>
-                    <span>Vitrine Pública da Turma</span>
-                </h2>
-                <p class="text-sm text-marrom-600">Ouça os podcasts compartilhados publicamente por todos os grupos</p>
-            </div>
-
-            <div id="public-showcase-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <!-- Preenchido via JS -->
-            </div>
-        </section>
-
-        <!-- SEÇÃO 6: REVISÃO, AUTOAVALIAÇÃO E METODOLOGIAS -->
-        <section id="sec-revisao" class="hidden space-y-6">
-            <div class="border-b border-marrom-300 pb-4">
-                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                    <i class="fa-solid fa-clipboard-check text-indigo-600"></i>
-                    <span>Revisão Pedagógica & Autoavaliação</span>
-                </h2>
-                <p class="text-sm text-marrom-600">Pense criticamente sobre a produção antes da publicação final</p>
-            </div>
-
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- CHECKLIST DE QUALIDADE COM PROGRESSO -->
-                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
-                    <div class="flex items-center justify-between border-b pb-2">
-                        <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider flex items-center space-x-2">
-                            <i class="fa-solid fa-list-check text-vinho-700"></i>
-                            <span>Checklist do Grupo</span>
-                        </h3>
-                        <span id="checklist-progress-text" class="text-xs font-bold text-vinho-700 bg-vinho-50 px-2.5 py-1 rounded-full border border-vinho-100">0% Concluído</span>
-                    </div>
-
-                    <div class="space-y-3" id="checklist-container">
-                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
-                            <span class="text-sm text-marrom-800">O tema principal e o objetivo do episódio estão claros para o ouvinte?</span>
-                        </label>
-                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
-                            <span class="text-sm text-marrom-800">O roteiro segue a estrutura com início, desenvolvimento e encerramento?</span>
-                        </label>
-                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
-                            <span class="text-sm text-marrom-800">A dicção e o tom de voz estão compreensíveis e coerentes com a proposta?</span>
-                        </label>
-                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
-                            <span class="text-sm text-marrom-800">Todos os integrantes participaram de forma equilibrada nas funções?</span>
-                        </label>
-                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
-                            <span class="text-sm text-marrom-800">As informações apresentadas foram devidamente checadas em fontes confiáveis?</span>
-                        </label>
-                        <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
-                            <span class="text-sm text-marrom-800">Efeitos sonoros e trilhas respeitam os direitos autorais e licenças autorizadas?</span>
-                        </label>
-                    </div>
-                </div>
-
-                <!-- FORMULÁRIO DE AVALIAÇÃO DE APRENDIZAGEM -->
-                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
-                        <i class="fa-solid fa-comment-dots text-indigo-600"></i>
-                        <span>Reflexão do Grupo</span>
-                    </h3>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">O que aprendemos nesta produção?</label>
-                        <textarea id="reflection-learned" rows="3" class="w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-vinho-700 outline-none" placeholder="Ex: Aprendemos a organizar ideias e distribuir falas..."></textarea>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">O que melhoraríamos em uma próxima gravação?</label>
-                        <textarea id="reflection-improve" rows="3" class="w-full p-2.5 rounded-lg border text-sm focus:ring-2 focus:ring-vinho-700 outline-none" placeholder="Ex: Controlar melhor a altura do áudio e evitar ruídos de fundo..."></textarea>
-                    </div>
-
-                    <button onclick="saveReflection()" class="w-full btn-vinho py-2.5 rounded-lg text-sm font-bold flex items-center justify-center space-x-2 shadow">
-                        <i class="fa-solid fa-floppy-disk"></i>
-                        <span>Registrar Autoavaliação</span>
-                    </button>
-                    <p id="reflection-status" class="text-xs text-emerald-700 font-bold hidden text-center"><i class="fa-solid fa-check mr-1"></i>Reflexão salva com sucesso!</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- SEÇÃO 7: GUIA DA OFICINA -->
-        <section id="sec-guia" class="hidden space-y-6">
-            <div class="border-b border-marrom-300 pb-4">
-                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
-                    <i class="fa-solid fa-book-bookmark text-terracota-500"></i>
-                    <span>Guia Pedagógico da Oficina</span>
-                </h2>
-                <p class="text-sm text-marrom-600">Orientações de produção e pilares da aprendizagem por podcasts</p>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
-                    <div class="flex items-center space-x-3 text-vinho-700">
-                        <i class="fa-solid fa-diagram-project text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">1. Planejamento & Roteiro</h3>
-                    </div>
-                    <p class="text-sm text-marrom-700 leading-relaxed">
-                        Defina com o grupo o tema, o público-alvo e o formato (entrevista, debate ou crônica). Utilize o Gerador Inteligente para estruturar a abertura, o desenvolvimento e a fala dos integrantes.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
-                    <div class="flex items-center space-x-3 text-terracota-600">
-                        <i class="fa-solid fa-microphone text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">2. Gravação & Voz</h3>
-                    </div>
-                    <p class="text-sm text-marrom-700 leading-relaxed">
-                        No Estúdio Online, faça testes de som antes. Garanta um ambiente silencioso, articule bem as palavras e consulte seu roteiro na tela lateral.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
-                    <div class="flex items-center space-x-3 text-dourado-600">
-                        <i class="fa-solid fa-list-check text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">3. Revisão & Autoavaliação</h3>
-                    </div>
-                    <p class="text-sm text-marrom-700 leading-relaxed">
-                        Ouça a prévia do áudio com seu grupo. Utilize o Checklist de Qualidade para garantir que as fontes são confiáveis e que todos participaram.
-                    </p>
-                </div>
-
-                <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
-                    <div class="flex items-center space-x-3 text-emerald-600">
-                        <i class="fa-solid fa-bullhorn text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">4. Publicação & Vitrine</h3>
-                    </div>
-                    <p class="text-sm text-marrom-700 leading-relaxed">
-                        Defina a visibilidade do episódio (privado para o grupo ou público para a turma). Compartilhe na Vitrine Pública para trocar escutas com outras equipes.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- FOOTER DA OFICINA -->
-    <footer class="bg-marrom-900 text-creme-300 py-6 border-t-4 border-dourado-500 mt-auto">
-        <div class="max-w-7xl mx-auto px-4 text-center sm:text-left sm:flex sm:items-center sm:justify-between text-xs space-y-2 sm:space-y-0">
-            <div>
-                <p class="font-bold text-creme-100 font-display text-sm">VOZES EM PAUTA — Oficina de Podcast</p>
-                <p>Orientação: Professora Bárbara Vitória • Língua Portuguesa</p>
-            </div>
-            <div class="text-creme-300">
-                <span>Ambiente Pedagógico de Produção de Mídia Escolar</span>
-            </div>
+        <div class="field">
+          <label for="username">Usuário do grupo</label>
+          <input id="username" maxlength="40" autocomplete="username" placeholder="Crie um usuário">
         </div>
-    </footer>
-
-    <!-- MODAL DE CRIAR PLAYLIST -->
-    <div id="modal-playlist" class="fixed inset-0 bg-marrom-900/60 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
-        <div class="bg-white rounded-2xl p-6 max-w-md w-full border-2 border-vinho-700 shadow-2xl space-y-4">
-            <h3 class="text-lg font-display font-bold text-marrom-900 flex items-center space-x-2">
-                <i class="fa-solid fa-folder-plus text-vinho-700"></i>
-                <span>Nova Playlist do Grupo</span>
-            </h3>
-            <div>
-                <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome da Playlist</label>
-                <input type="text" id="new-playlist-title" placeholder="Ex: Literatura em voz alta" class="w-full p-2.5 border border-marrom-300 rounded-lg text-sm focus:ring-2 focus:ring-vinho-700 outline-none">
-            </div>
-            <div class="flex justify-end space-x-2 pt-2">
-                <button onclick="closeCreatePlaylistModal()" class="px-4 py-2 bg-gray-200 text-marrom-800 text-xs font-bold rounded-lg">Cancelar</button>
-                <button onclick="saveNewPlaylist()" class="px-4 py-2 btn-vinho text-xs font-bold rounded-lg">Criar Playlist</button>
-            </div>
+        <div class="field">
+          <label for="password">Senha</label>
+          <input id="password" type="password" minlength="4" autocomplete="current-password" placeholder="Mínimo de 4 caracteres">
         </div>
+      </div>
+      <div class="actions">
+        <button class="primary" id="authBtn" type="button">Criar meu grupo</button>
+      </div>
+      <div id="authMessage" role="status" aria-live="polite"></div>
+      <div class="notice">
+        <strong>Importante:</strong> esta versão é um protótipo local para atividades pedagógicas. As contas, os roteiros e os episódios ficam neste navegador. Não use senhas pessoais.
+      </div>
+    </div>
+  </section>
+
+  <section id="appView" class="hidden">
+    <div class="section-title">
+      <h2>Seu espaço de criação</h2>
+      <p>Escolha um cartão para começar. Seu grupo é o protagonista do episódio!</p>
+    </div>
+    <div class="grid" id="menuGrid">
+      <button class="menu-card" data-view="script">
+        <span class="emoji">📝</span><strong>Montar roteiro</strong>
+        <span>Planeje o conteúdo e organize as falas.</span>
+      </button>
+      <button class="menu-card" data-view="studio">
+        <span class="emoji">🎧</span><strong>Estúdio de gravação</strong>
+        <span>Grave, ouça e converta o episódio para MP3.</span>
+      </button>
+      <button class="menu-card" data-view="episodes">
+        <span class="emoji">💿</span><strong>Meus episódios</strong>
+        <span>Ouça, baixe e organize suas produções.</span>
+      </button>
+      <button class="menu-card" data-view="showcase">
+        <span class="emoji">🌟</span><strong>Mostra de podcasts</strong>
+        <span>Veja os episódios públicos deste navegador.</span>
+      </button>
+      <button class="menu-card" data-view="reflection">
+        <span class="emoji">💭</span><strong>Reflexão da equipe</strong>
+        <span>Avalie o processo e o que aprenderam.</span>
+      </button>
+      <button class="menu-card" data-view="help">
+        <span class="emoji">📚</span><strong>Como funciona</strong>
+        <span>Consulte as etapas e os cuidados de publicação.</span>
+      </button>
     </div>
 
-    <!-- JAVASCRIPT PRINCIPAL DA APLICAÇÃO -->
-    <script>
-        // ESTADO GLOBAL DO APLICATIVO
-        let currentFontScale = 1;
-        let currentUser = JSON.parse(localStorage.getItem('vozes_current_user')) || null;
-        let registeredUsers = JSON.parse(localStorage.getItem('vozes_registered_users')) || [];
-
-        let scripts = JSON.parse(localStorage.getItem('vozes_scripts')) || [];
-        let playlists = JSON.parse(localStorage.getItem('vozes_playlists')) || [
-            "Literatura em voz alta",
-            "Entrevistas da nossa turma",
-            "Debates e argumentação",
-            "Notícias da escola",
-            "Crônicas sonoras"
-        ];
-        let episodes = JSON.parse(localStorage.getItem('vozes_episodes')) || [
-            {
-                id: 'demo-1',
-                title: 'Episódio Exemplo — O Poder das Crônicas',
-                groupName: 'Equipe Palavra Viva',
-                user: 'palavraviva01',
-                playlist: 'Crônicas sonoras',
-                visibility: 'Público',
-                date: '28/10/2026',
-                audioUrl: '',
-                scriptId: null,
-                listens: 14
-            }
-        ];
-
-        // VARIÁVEIS DE ÁUDIO E CANVAS
-        let mediaRecorder;
-        let audioChunks = [];
-        let recordedBlob = null;
-        let recordingTimerInterval;
-        let recordingSeconds = 0;
-        let audioContext, analyser, animFrameId;
-
-        // ACESSIBILIDADE: FONTE
-        function changeFontSize(delta) {
-            currentFontScale = Math.min(Math.max(currentFontScale + delta, 0.85), 1.3);
-            document.documentElement.style.setProperty('--font-scale', currentFontScale);
-        }
-        function resetFontSize() {
-            currentFontScale = 1;
-            document.documentElement.style.setProperty('--font-scale', currentFontScale);
-        }
-
-        // RODAR AO CARREGAR PÁGINA
-        window.addEventListener('DOMContentLoaded', () => {
-            renderUserStatus();
-            renderPlaylistsOptions();
-            renderEpisodesList();
-            renderPublicShowcase();
-            populateScriptSelectorInStudio();
-            initCanvasVisualizer();
-        });
-
-        // TROCA DE ABAS NA TELA DE AUTENTICAÇÃO
-        function switchAuthTab(tab) {
-            const btnLogin = document.getElementById('tab-btn-login');
-            const btnReg = document.getElementById('tab-btn-register');
-            const btnReset = document.getElementById('tab-btn-reset');
-            const formLogin = document.getElementById('form-login');
-            const formReg = document.getElementById('form-register');
-            const formReset = document.getElementById('form-reset');
-
-            [btnLogin, btnReg, btnReset].forEach(b => b.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-marrom-600 hover:text-marrom-900");
-            [formLogin, formReg, formReset].forEach(f => f.classList.add('hidden'));
-
-            if (tab === 'login') {
-                btnLogin.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700";
-                formLogin.classList.remove('hidden');
-            } else if (tab === 'register') {
-                btnReg.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700";
-                formReg.classList.remove('hidden');
-            } else if (tab === 'reset') {
-                btnReset.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700";
-                formReset.classList.remove('hidden');
-            }
-        }
-
-        // 1. LOGIN
-        function handleLogin(e) {
-            e.preventDefault();
-            const username = document.getElementById('login-username').value.trim();
-            const password = document.getElementById('login-password').value;
-
-            const user = registeredUsers.find(u => u.username === username && u.password === password);
-            if (user) {
-                currentUser = user;
-                localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
-                renderUserStatus();
-                alert(`Bem-vindos de volta, ${user.teamName}!`);
-            } else {
-                alert('Usuário ou senha incorretos. Verifique as credenciais ou cadastre o grupo.');
-            }
-        }
-
-        // 2. CADASTRO
-        function handleRegister(e) {
-            e.preventDefault();
-            const teamName = document.getElementById('reg-team-name').value.trim();
-            const username = document.getElementById('reg-username').value.trim();
-            const email = document.getElementById('reg-email').value.trim();
-            const password = document.getElementById('reg-password').value;
-
-            if (registeredUsers.some(u => u.username === username)) {
-                alert('Este nome de usuário já está em uso por outro grupo. Escolha outro.');
-                return;
-            }
-
-            const newUser = { teamName, username, email, password, members: '' };
-            registeredUsers.push(newUser);
-            localStorage.setItem('vozes_registered_users', JSON.stringify(registeredUsers));
-
-            currentUser = newUser;
-            localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
-            renderUserStatus();
-            alert(`Grupo '${teamName}' cadastrado com sucesso!`);
-        }
-
-        // 3. REDEFINIR SENHA
-        function handleResetPassword(e) {
-            e.preventDefault();
-            const identifier = document.getElementById('reset-identifier').value.trim();
-            const newPassword = document.getElementById('reset-new-password').value;
-
-            const userIndex = registeredUsers.findIndex(u => u.username === identifier || (u.email && u.email === identifier));
-
-            if (userIndex !== -1) {
-                registeredUsers[userIndex].password = newPassword;
-                localStorage.setItem('vozes_registered_users', JSON.stringify(registeredUsers));
-                alert('Senha redefinida com sucesso! Você já pode entrar com a nova senha.');
-                switchAuthTab('login');
-            } else {
-                alert('Não encontramos nenhuma conta com o e-mail ou usuário informado.');
-            }
-        }
-
-        function logoutUser() {
-            currentUser = null;
-            localStorage.removeItem('vozes_current_user');
-            renderUserStatus();
-            navigateTo('home');
-        }
-
-        // ATUALIZAR DADOS DO PERFIL
-        function handleUpdateProfile(e) {
-            e.preventDefault();
-            if (!currentUser) return;
-
-            const teamName = document.getElementById('profile-team-name').value.trim();
-            const email = document.getElementById('profile-email').value.trim();
-            const members = document.getElementById('profile-members').value.trim();
-
-            currentUser.teamName = teamName;
-            currentUser.email = email;
-            currentUser.members = members;
-
-            // Atualiza array de usuários registrados
-            const idx = registeredUsers.findIndex(u => u.username === currentUser.username);
-            if(idx !== -1) registeredUsers[idx] = currentUser;
-
-            localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
-            localStorage.setItem('vozes_registered_users', JSON.stringify(registeredUsers));
-
-            renderUserStatus();
-            alert('Perfil do grupo atualizado com sucesso!');
-        }
-
-        function renderUserStatus() {
-            const container = document.getElementById('user-status-container');
-            const authBox = document.getElementById('auth-box');
-            const professoraBanner = document.getElementById('professora-banner');
-            const groupWelcomeBanner = document.getElementById('group-welcome-banner');
-            const mainNav = document.getElementById('main-nav-bar');
-
-            if (currentUser) {
-                container.innerHTML = `
-                    <div class="flex items-center space-x-2 bg-vinho-900 border border-vinho-700 px-3 py-1.5 rounded-lg text-xs">
-                        <i class="fa-solid fa-users text-dourado-400"></i>
-                        <span class="font-bold text-creme-50">${currentUser.teamName}</span>
-                        <button onclick="navigateTo('perfil')" title="Perfil do Grupo" class="ml-1 text-dourado-400 hover:text-white">
-                            <i class="fa-solid fa-gear"></i>
-                        </button>
-                        <button onclick="logoutUser()" title="Sair do Grupo" class="ml-1 text-creme-300 hover:text-red-300">
-                            <i class="fa-solid fa-right-from-bracket"></i>
-                        </button>
-                    </div>
-                `;
-                if(authBox) authBox.classList.add('hidden');
-                if(professoraBanner) professoraBanner.classList.add('hidden'); // Oculta mensagem da professora após login
-                if(groupWelcomeBanner) {
-                    groupWelcomeBanner.classList.remove('hidden');
-                    document.getElementById('welcome-team-name').innerText = `Bem-vindos, ${currentUser.teamName}!`;
-                }
-                if(mainNav) mainNav.classList.remove('hidden');
-
-                // Preencher inputs do perfil
-                document.getElementById('profile-team-name').value = currentUser.teamName || '';
-                document.getElementById('profile-username').value = currentUser.username || '';
-                document.getElementById('profile-email').value = currentUser.email || '';
-                document.getElementById('profile-members').value = currentUser.members || '';
-
-                // Preencher estatísticas do perfil
-                const userScripts = scripts.filter(s => s.team === currentUser.teamName);
-                const userEps = episodes.filter(e => e.user === currentUser.username);
-                const publicEps = userEps.filter(e => e.visibility === 'Público');
-
-                document.getElementById('stat-scripts-count').innerText = userScripts.length;
-                document.getElementById('stat-episodes-count').innerText = userEps.length;
-                document.getElementById('stat-public-count').innerText = publicEps.length;
-
-            } else {
-                container.innerHTML = `
-                    <button onclick="navigateTo('home')" class="text-xs font-bold text-dourado-400 bg-vinho-800 hover:bg-vinho-700 px-3 py-1.5 rounded-lg border border-vinho-600">
-                        Entrar / Criar Grupo
-                    </button>
-                `;
-                if(authBox) authBox.classList.remove('hidden');
-                if(professoraBanner) professoraBanner.classList.remove('hidden'); // Exibe mensagem da professora quando não logado
-                if(groupWelcomeBanner) groupWelcomeBanner.classList.add('hidden');
-                if(mainNav) mainNav.classList.add('hidden');
-            }
-        }
-
-        // NAVEGAÇÃO ENTRE SEÇÕES (SPA)
-        function navigateTo(sectionId) {
-            const sections = ['home', 'roteiros', 'estudio', 'biblioteca', 'vitrine', 'revisao', 'guia', 'perfil'];
-            sections.forEach(sec => {
-                const el = document.getElementById(`sec-${sec}`);
-                if(el) {
-                    if (sec === sectionId) {
-                        el.classList.remove('hidden');
-                    } else {
-                        el.classList.add('hidden');
-                    }
-                }
-            });
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        }
-
-        // GERADOR INTELIGENTE DE ROTEIROS
-        function generateScript() {
-            const title = document.getElementById('script-title').value || 'Nosso Podcast';
-            const theme = document.getElementById('script-theme').value || 'Tema Geral';
-            const format = document.getElementById('script-format').value;
-            const hostsCount = document.getElementById('script-hosts').value;
-            const tone = document.getElementById('script-tone').value;
-            const audience = document.getElementById('script-audience').value || 'Comunidade Escolar';
-            const guests = document.getElementById('script-guests').value || 'Nenhum convidado';
-            const duration = document.getElementById('script-duration').value;
-            const ideas = document.getElementById('script-ideas').value || 'Principais tópicos do assunto';
-            const closing = document.getElementById('script-closing').value || 'Obrigado por escutar nosso podcast!';
-
-            let hostsArray = [];
-            for(let i = 1; i <= hostsCount; i++) {
-                hostsArray.push(`Apresentador(a) ${i}`);
-            }
-
-            let scriptText = `====================================================\n`;
-            scriptText += `ROTEIRO ESTRUTURADO — ${title.toUpperCase()}\n`;
-            scriptText += `====================================================\n`;
-            scriptText += `• Tema: ${theme}\n`;
-            scriptText += `• Formato: ${format} | Tom: ${tone} | Duração: ${duration}\n`;
-            scriptText += `• Público-Alvo: ${audience}\n`;
-            scriptText += `• Equipe: ${hostsArray.join(', ')}\n`;
-            scriptText += `• Convidado(s): ${guests}\n\n`;
-
-            scriptText += `--- 1. ABERTURA (Vínheta sonora suave) ---\n`;
-            scriptText += `[Efeito Sonoro / Trilha de Abertura em tom ${tone.toLowerCase()}]\n`;
-            scriptText += `${hostsArray[0]}: Olá a todos! Sejam muito bem-vindos ao podcast '${title}'. Eu sou ${hostsArray[0]}...\n`;
-            if(hostsArray[1]) {
-                scriptText += `${hostsArray[1]}: ...e eu sou ${hostsArray[1]}! Hoje vamos conversar sobre um tema super relevante: ${theme}.\n`;
-            }
-            scriptText += `\n--- 2. CONTEXTUALIZAÇÃO DO TEMA ---\n`;
-            scriptText += `${hostsArray[0]}: Para quem está nos ouvindo, escolhemos este assunto porque ${ideas}.\n`;
-
-            if (format === 'Entrevista') {
-                scriptText += `\n--- 3. ENTREVISTA & PERGUNTAS ---\n`;
-                scriptText += `${hostsArray[0]}: Hoje temos a presença especial de ${guests}. Seja bem-vindo(a)!\n`;
-                scriptText += `[Convidado]: Obrigado pelo convite!\n`;
-                scriptText += `${hostsArray[1] || hostsArray[0]}: Para começar: qual a sua visão sobre ${theme}?\n`;
-                scriptText += `[Convidado]: (Espaço para resposta do convidado...)\n`;
-            } else if (format === 'Debate') {
-                scriptText += `\n--- 3. DEBATE E ARGUMENTAÇÃO ---\n`;
-                scriptText += `${hostsArray[0]}: Por um lado, temos o argumento de que...\n`;
-                if(hostsArray[1]) scriptText += `${hostsArray[1]}: Por outro lado, precisamos considerar que...\n`;
-            } else {
-                scriptText += `\n--- 3. DESENVOLVIMENTO DAS IDEIAS ---\n`;
-                scriptText += `${hostsArray[0]}: Vamos analisar os pontos principais: ${ideas}\n`;
-            }
-
-            scriptText += `\n--- 4. ENCERRAMENTO E REFLEXÃO FINAL ---\n`;
-            scriptText += `${hostsArray[0]}: Estamos chegando ao fim deste episódio. ${closing}\n`;
-            if(hostsArray[1]) scriptText += `${hostsArray[1]}: Não se esqueça de compartilhar com seus colegas. Até a próxima!\n`;
-            scriptText += `[Trilha Sonora de Encerramento]\n\n`;
-
-            scriptText += `--- CHECKLIST DE GRAVAÇÃO ---\n`;
-            scriptText += `[ ] Fazer teste de microfone antes\n[ ] Evitar ruídos no ambiente\n[ ] Manter o tom ${tone}`;
-
-            document.getElementById('script-editor').value = scriptText;
-            document.getElementById('script-saved-badge').classList.add('hidden');
-        }
-
-        function copyScriptToClipboard() {
-            const editor = document.getElementById('script-editor');
-            if(!editor.value) return;
-            editor.select();
-            document.execCommand('copy');
-            alert('Roteiro copiado para a área de transferência!');
-        }
-
-        function saveGeneratedScript() {
-            const text = document.getElementById('script-editor').value;
-            const title = document.getElementById('script-title').value || 'Roteiro Sem Título';
-            if(!text) return;
-
-            const newScript = {
-                id: 'script_' + Date.now(),
-                title: title,
-                content: text,
-                date: new Date().toLocaleDateString('pt-BR'),
-                team: currentUser ? currentUser.teamName : 'Grupo Geral'
-            };
-
-            scripts.push(newScript);
-            localStorage.setItem('vozes_scripts', JSON.stringify(scripts));
-            document.getElementById('script-saved-badge').classList.remove('hidden');
-            populateScriptSelectorInStudio();
-            renderUserStatus();
-        }
-
-        // VISUALIZADOR DE ÁUDIO NO CANVAS
-        function initCanvasVisualizer() {
-            const canvas = document.getElementById('audio-visualizer-canvas');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            canvas.width = canvas.parentElement.clientWidth;
-            canvas.height = canvas.parentElement.clientHeight;
-
-            function drawWave() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = '#6E1327';
-                
-                const barWidth = 4;
-                const gap = 2;
-                const bars = Math.floor(canvas.width / (barWidth + gap));
-
-                for (let i = 0; i < bars; i++) {
-                    const barHeight = mediaRecorder && mediaRecorder.state === 'recording' 
-                        ? Math.random() * canvas.height * 0.8 + 5
-                        : 4;
-
-                    const x = i * (barWidth + gap);
-                    const y = (canvas.height - barHeight) / 2;
-                    ctx.fillRect(x, y, barWidth, barHeight);
-                }
-                animFrameId = requestAnimationFrame(drawWave);
-            }
-            drawWave();
-        }
-
-        // ESTÚDIO DE GRAVAÇÃO COM MEDIA RECORDER
-        async function startRecording() {
-            if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-                alert('O seu navegador não possui suporte para gravação de áudio.');
-                return;
-            }
-
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                mediaRecorder = new MediaRecorder(stream);
-                audioChunks = [];
-
-                mediaRecorder.ondataavailable = event => {
-                    audioChunks.push(event.data);
-                };
-
-                mediaRecorder.onstop = () => {
-                    recordedBlob = new Blob(audioChunks, { type: 'audio/webm' });
-                    const audioUrl = URL.createObjectURL(recordedBlob);
-                    const previewEl = document.getElementById('audio-preview');
-                    previewEl.src = audioUrl;
-                    document.getElementById('preview-audio-container').classList.remove('hidden');
-                };
-
-                mediaRecorder.start();
-
-                // Atualizar UI
-                document.getElementById('btn-start-rec').disabled = true;
-                document.getElementById('btn-start-rec').classList.add('opacity-50');
-                document.getElementById('btn-stop-rec').disabled = false;
-                document.getElementById('btn-stop-rec').classList.remove('opacity-50', 'cursor-not-allowed');
-                
-                document.getElementById('rec-dot').classList.remove('bg-gray-500');
-                document.getElementById('rec-dot').classList.add('bg-red-500', 'animate-pulse');
-                document.getElementById('rec-status-text').innerText = 'GRAVANDO ÁUDIO...';
-
-                // Timer
-                recordingSeconds = 0;
-                recordingTimerInterval = setInterval(() => {
-                    recordingSeconds++;
-                    const mins = String(Math.floor(recordingSeconds / 60)).padStart(2, '0');
-                    const secs = String(recordingSeconds % 60).padStart(2, '0');
-                    document.getElementById('studio-timer').innerText = `${mins}:${secs}`;
-                }, 1000);
-
-            } catch (err) {
-                alert('Permissão de microfone negada ou indisponível.');
-            }
-        }
-
-        function stopRecording() {
-            if(mediaRecorder && mediaRecorder.state !== 'inactive') {
-                mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
-
-                clearInterval(recordingTimerInterval);
-
-                // Atualizar UI
-                document.getElementById('btn-start-rec').disabled = false;
-                document.getElementById('btn-start-rec').classList.remove('opacity-50');
-                document.getElementById('btn-stop-rec').disabled = true;
-                document.getElementById('btn-stop-rec').classList.add('opacity-50', 'cursor-not-allowed');
-
-                document.getElementById('rec-dot').classList.add('bg-gray-500');
-                document.getElementById('rec-dot').classList.remove('bg-red-500', 'animate-pulse');
-                document.getElementById('rec-status-text').innerText = 'GRAVAÇÃO CONCLUÍDA';
-            }
-        }
-
-        function clearPreview() {
-            document.getElementById('preview-audio-container').classList.add('hidden');
-            recordedBlob = null;
-            document.getElementById('studio-timer').innerText = '00:00';
-            document.getElementById('rec-status-text').innerText = 'Estúdio Pronto';
-        }
-
-        function saveRecordedEpisode() {
-            const title = document.getElementById('studio-ep-title').value.trim() || 'Episódio Sem Título';
-            const visibility = document.getElementById('studio-ep-visibility').value;
-            const scriptId = document.getElementById('studio-ep-script-link').value || null;
-
-            const newEp = {
-                id: 'ep_' + Date.now(),
-                title: title,
-                groupName: currentUser ? currentUser.teamName : 'Equipe Visitante',
-                user: currentUser ? currentUser.username : 'anon',
-                playlist: 'Crônicas sonoras',
-                visibility: visibility,
-                date: new Date().toLocaleDateString('pt-BR'),
-                audioUrl: document.getElementById('audio-preview').src,
-                scriptId: scriptId,
-                listens: 0
-            };
-
-            episodes.unshift(newEp);
-            localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
-            
-            alert('Episódio salvo com sucesso no projeto!');
-            clearPreview();
-            renderEpisodesList();
-            renderPublicShowcase();
-            renderUserStatus();
-            navigateTo('biblioteca');
-        }
-
-        function downloadEpisodeAudio() {
-            if(!recordedBlob) return;
-            const a = document.createElement('a');
-            a.href = URL.createObjectURL(recordedBlob);
-            a.download = `podcast_${Date.now()}.webm`;
-            a.click();
-        }
-
-        function populateScriptSelectorInStudio() {
-            const select = document.getElementById('studio-ep-script-link');
-            select.innerHTML = '<option value="">-- Selecionar um roteiro do grupo (Opcional) --</option>';
-            scripts.forEach(s => {
-                select.innerHTML += `<option value="${s.id}">${s.title} (${s.date})</option>`;
-            });
-
-            select.onchange = function() {
-                const selected = scripts.find(s => s.id === this.value);
-                const display = document.getElementById('studio-script-display');
-                if(selected) {
-                    display.innerText = selected.content;
-                } else {
-                    display.innerHTML = '<em>Nenhum roteiro selecionado no momento.</em>';
-                }
-            };
-        }
-
-        // GERENCIAMENTO DE PLAYLISTS E BIBLIOTECA
-        function openCreatePlaylistModal() {
-            document.getElementById('modal-playlist').classList.remove('hidden');
-        }
-        function closeCreatePlaylistModal() {
-            document.getElementById('modal-playlist').classList.add('hidden');
-        }
-        function saveNewPlaylist() {
-            const name = document.getElementById('new-playlist-title').value.trim();
-            if(name && !playlists.includes(name)) {
-                playlists.push(name);
-                localStorage.setItem('vozes_playlists', JSON.stringify(playlists));
-                renderPlaylistsOptions();
-                closeCreatePlaylistModal();
-            }
-        }
-
-        function renderPlaylistsOptions() {
-            const select = document.getElementById('playlist-filter-select');
-            select.innerHTML = '<option value="all">Todas as Playlists</option>';
-            playlists.forEach(pl => {
-                select.innerHTML += `<option value="${pl}">${pl}</option>`;
-            });
-        }
-
-        function renderEpisodesList(filteredList = null) {
-            const container = document.getElementById('episodes-list-container');
-            container.innerHTML = '';
-
-            // Filtrar apenas episódios do usuário logado se não houver filtro específico
-            let listToRender = filteredList || episodes;
-            if (currentUser && !filteredList) {
-                listToRender = episodes.filter(e => e.user === currentUser.username);
-            }
-
-            if(listToRender.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center py-8 text-marrom-600">Nenhum episódio encontrado no projeto desta equipe.</div>`;
-                return;
-            }
-
-            listToRender.forEach(ep => {
-                const isPublic = ep.visibility === 'Público';
-                container.innerHTML += `
-                    <div class="bg-white p-5 rounded-2xl border border-marrom-300 shadow-sm space-y-3">
-                        <div class="flex items-start justify-between">
-                            <div>
-                                <span class="text-xs font-bold px-2.5 py-1 rounded-full ${isPublic ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
-                                    ${isPublic ? '🌐 Público' : '🔒 Privado'}
-                                </span>
-                                <h4 class="text-lg font-bold text-marrom-900 mt-2">${ep.title}</h4>
-                                <p class="text-xs text-marrom-600">${ep.groupName} • ${ep.date}</p>
-                            </div>
-                            <button onclick="deleteEpisode('${ep.id}')" class="text-xs text-red-500 hover:text-red-700">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
-                        </div>
-
-                        ${ep.audioUrl ? `<audio controls src="${ep.audioUrl}" class="w-full"></audio>` : '<p class="text-xs italic text-marrom-500">Áudio demonstrativo</p>'}
-
-                        <div class="flex items-center justify-between text-xs pt-2 border-t">
-                            <span class="text-marrom-600"><i class="fa-solid fa-folder text-dourado-600 mr-1"></i>${ep.playlist}</span>
-                            <button onclick="toggleVisibility('${ep.id}')" class="font-bold text-vinho-700 hover:underline">
-                                Alternar para ${isPublic ? 'Privado' : 'Público'}
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function filterEpisodes(type) {
-            let baseList = currentUser ? episodes.filter(e => e.user === currentUser.username) : episodes;
-            if(type === 'all') renderEpisodesList(baseList);
-            else if(type === 'public') renderEpisodesList(baseList.filter(e => e.visibility === 'Público'));
-            else if(type === 'private') renderEpisodesList(baseList.filter(e => e.visibility === 'Privado'));
-        }
-
-        function filterByPlaylist(plName) {
-            let baseList = currentUser ? episodes.filter(e => e.user === currentUser.username) : episodes;
-            if(plName === 'all') renderEpisodesList(baseList);
-            else renderEpisodesList(baseList.filter(e => e.playlist === plName));
-        }
-
-        function toggleVisibility(id) {
-            const ep = episodes.find(e => e.id === id);
-            if(ep) {
-                ep.visibility = ep.visibility === 'Público' ? 'Privado' : 'Público';
-                localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
-                renderEpisodesList();
-                renderPublicShowcase();
-                renderUserStatus();
-            }
-        }
-
-        function deleteEpisode(id) {
-            if(confirm('Tem certeza que deseja excluir este episódio?')) {
-                episodes = episodes.filter(e => e.id !== id);
-                localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
-                renderEpisodesList();
-                renderPublicShowcase();
-                renderUserStatus();
-            }
-        }
-
-        // VITRINE PÚBLICA
-        function renderPublicShowcase() {
-            const container = document.getElementById('public-showcase-container');
-            container.innerHTML = '';
-
-            const publicEps = episodes.filter(e => e.visibility === 'Público');
-
-            if(publicEps.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-3 text-center py-12 text-marrom-600">
-                        Nenhum podcast publicado publicamente ainda. Marque um episódio como "Público" na biblioteca!
-                    </div>
-                `;
-                return;
-            }
-
-            publicEps.forEach(ep => {
-                container.innerHTML += `
-                    <div class="bg-white p-6 rounded-2xl border-2 border-emerald-500/30 shadow-md space-y-4 flex flex-col justify-between">
-                        <div>
-                            <div class="flex items-center space-x-2 text-emerald-600 text-xs font-bold mb-2">
-                                <i class="fa-solid fa-tower-broadcast"></i>
-                                <span>PUBLICADO NA VITRINE</span>
-                            </div>
-                            <h4 class="text-xl font-display font-bold text-marrom-900">${ep.title}</h4>
-                            <p class="text-xs font-bold text-vinho-700 mt-1"><i class="fa-solid fa-users mr-1"></i>${ep.groupName}</p>
-                        </div>
-
-                        ${ep.audioUrl ? `<audio controls src="${ep.audioUrl}" class="w-full"></audio>` : '<p class="text-xs text-marrom-500">Áudio indisponível</p>'}
-
-                        <div class="flex items-center justify-between text-xs text-marrom-600 pt-2 border-t">
-                            <span><i class="fa-solid fa-headphones mr-1"></i>${ep.listens || 0} reproduções</span>
-                            <button onclick="shareLink('${ep.title}')" class="text-vinho-700 font-bold hover:underline">
-                                <i class="fa-solid fa-share-nodes mr-1"></i>Compartilhar
-                            </button>
-                        </div>
-                    </div>
-                `;
-            });
-        }
-
-        function shareLink(title) {
-            alert(`Link do episódio '${title}' copiado para a área de transferência!`);
-        }
-
-        // CHECKLIST E AUTOAVALIAÇÃO
-        function updateChecklistProgress() {
-            const checkboxes = document.querySelectorAll('.chk-item');
-            let checked = 0;
-            checkboxes.forEach(c => { if(c.checked) checked++; });
-            const pct = Math.round((checked / checkboxes.length) * 100);
-            document.getElementById('checklist-progress-text').innerText = `${pct}% Concluído`;
-        }
-
-        function saveReflection() {
-            const learned = document.getElementById('reflection-learned').value;
-            const improve = document.getElementById('reflection-improve').value;
-            if(!learned && !improve) return;
-
-            const reflectionData = { learned, improve, date: new Date().toLocaleDateString('pt-BR') };
-            localStorage.setItem('vozes_reflection', JSON.stringify(reflectionData));
-            document.getElementById('reflection-status').classList.remove('hidden');
-        }
-    </script>
+    <section id="scriptView" class="view hidden">
+      <div class="panel">
+        <h2>📝 Laboratório de roteiros</h2>
+        <p>Preencha os campos para receber uma estrutura inicial. Depois, personalize as falas com a voz do seu grupo.</p>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="scriptTitle">Título do podcast</label>
+            <input id="scriptTitle" placeholder="Ex.: Conexões em pauta">
+          </div>
+          <div class="field">
+            <label for="topic">Tema central</label>
+            <input id="topic" placeholder="Sobre o que vamos conversar?">
+          </div>
+          <div class="field">
+            <label for="format">Formato</label>
+            <select id="format">
+              <option value="conversa">Conversa entre apresentadores</option>
+              <option value="entrevista">Entrevista</option>
+              <option value="debate">Debate de ideias</option>
+              <option value="noticias">Notícias e análise</option>
+              <option value="narrativa">Narrativa ou crônica sonora</option>
+              <option value="educativo">Podcast educativo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="hosts">Número de apresentadores</label>
+            <select id="hosts">
+              <option>1</option><option selected>2</option><option>3</option>
+              <option>4</option><option>5</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="duration">Duração desejada</label>
+            <select id="duration">
+              <option value="3">3 minutos</option>
+              <option value="5" selected>5 minutos</option>
+              <option value="8">8 minutos</option>
+              <option value="10">10 minutos</option>
+              <option value="15">15 minutos</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="audience">Público-alvo</label>
+            <input id="audience" placeholder="Ex.: estudantes do Ensino Médio">
+          </div>
+          <div class="field">
+            <label for="tone">Tom da conversa</label>
+            <select id="tone">
+              <option>Descontraído e respeitoso</option>
+              <option>Jornalístico</option>
+              <option>Formal e acadêmico</option>
+              <option>Investigativo</option>
+              <option>Poético e narrativo</option>
+              <option>Humorístico, sem ofensas</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="guest">Convidado (opcional)</label>
+            <input id="guest" placeholder="Nome ou perfil do convidado">
+          </div>
+          <div class="field full">
+            <label for="ideas">Ideias, argumentos, perguntas ou dados</label>
+            <textarea id="ideas" placeholder="Liste os pontos que precisam aparecer no episódio. Inclua fontes confiáveis quando possível."></textarea>
+          </div>
+          <div class="field full">
+            <label for="closing">Como desejam encerrar?</label>
+            <input id="closing" placeholder="Ex.: pergunta para reflexão ou convite à ação">
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" id="generateScript" type="button">✨ Gerar estrutura de roteiro</button>
+          <button class="secondary" id="clearScript" type="button">Limpar campos</button>
+        </div>
+        <div id="scriptOutput" class="output hidden" aria-live="polite"></div>
+        <div id="scriptActions" class="actions hidden">
+          <button class="success" id="saveScript" type="button">Salvar roteiro</button>
+          <button class="secondary" id="copyScript" type="button">Copiar roteiro</button>
+          <button class="secondary" id="downloadScript" type="button">Baixar TXT</button>
+        </div>
+        <div id="scriptMessage" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="studioView" class="view hidden">
+      <div class="panel">
+        <h2>🎙️ Estúdio de gravação</h2>
+        <p>Grave em um ambiente silencioso. Ao finalizar, o áudio será convertido para MP3 antes de ser disponibilizado.</p>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="episodeTitle">Título do episódio</label>
+            <input id="episodeTitle" placeholder="Ex.: Episódio 1 — Vozes em pauta">
+          </div>
+          <div class="field">
+            <label for="episodeVisibility">Visibilidade no protótipo</label>
+            <select id="episodeVisibility">
+              <option value="private">Privado — somente este grupo</option>
+              <option value="public">Público — mostra deste navegador</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="episodePlaylist">Playlist</label>
+            <select id="episodePlaylist"><option value="">Sem playlist</option></select>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div id="timer" aria-live="off">00:00</div>
+        <p id="recordingStatus" role="status" aria-live="polite">Pronto para gravar.</p>
+        <div class="actions">
+          <button id="startRecording" class="accent" type="button">🔴 Iniciar gravação</button>
+          <button id="stopRecording" class="primary" type="button" disabled>⏹️ Finalizar e converter para MP3</button>
+        </div>
+        <div id="recordingError" role="status" aria-live="polite"></div>
+        <div id="previewArea" class="hidden">
+          <h3>Prévia do episódio</h3>
+          <audio id="audioPreview" controls preload="metadata" style="width:100%"></audio>
+          <p id="previewInfo"></p>
+          <div class="actions">
+            <button id="downloadMP3" class="success" type="button">⬇️ Baixar MP3</button>
+            <button id="saveEpisode" class="primary" type="button">💾 Salvar episódio</button>
+            <button id="discardRecording" class="secondary" type="button">Descartar gravação</button>
+          </div>
+        </div>
+        <div class="notice">
+          <strong>Compatibilidade:</strong> use HTTPS ou localhost e permita o acesso ao microfone. A conversão precisa da biblioteca MP3 e de um navegador capaz de decodificar o formato gravado. Se a conversão falhar, o aplicativo mostrará o erro e não fingirá que o arquivo é MP3.
+        </div>
+      </div>
+    </section>
+
+    <section id="episodesView" class="view hidden">
+      <div class="panel">
+        <h2>💿 Minha biblioteca</h2>
+        <div class="form-grid">
+          <div class="field">
+            <label for="playlistName">Criar playlist</label>
+            <input id="playlistName" maxlength="60" placeholder="Ex.: Temporada 1">
+          </div>
+          <div class="field" style="justify-content:end">
+            <button class="primary" id="createPlaylist" type="button">Criar playlist</button>
+          </div>
+          <div class="field">
+            <label for="filterPlaylist">Filtrar episódios por playlist</label>
+            <select id="filterPlaylist"><option value="">Todas as playlists</option></select>
+          </div>
+        </div>
+        <div id="playlistList" class="actions"></div>
+        <div class="divider"></div>
+        <div id="episodeList" class="grid"></div>
+      </div>
+    </section>
+
+    <section id="showcaseView" class="view hidden">
+      <div class="panel">
+        <h2>🌟 Mostra de podcasts</h2>
+        <p>Esta mostra exibe episódios marcados como públicos e salvos neste navegador. Ainda não é uma publicação na internet.</p>
+        <div id="publicEpisodes" class="grid"></div>
+      </div>
+    </section>
+
+    <section id="reflectionView" class="view hidden">
+      <div class="panel">
+        <h2>💭 Reflexão da equipe</h2>
+        <p>Conversem e registrem a avaliação do processo de produção.</p>
+        <div class="form-grid">
+          <div class="field full">
+            <label for="reflectionLearned">O que aprendemos sobre linguagem oral e planejamento?</label>
+            <textarea id="reflectionLearned"></textarea>
+          </div>
+          <div class="field full">
+            <label for="reflectionStrengths">Quais foram os pontos fortes do episódio?</label>
+            <textarea id="reflectionStrengths"></textarea>
+          </div>
+          <div class="field full">
+            <label for="reflectionImprove">O que melhoraríamos na próxima gravação?</label>
+            <textarea id="reflectionImprove"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="primary" id="saveReflection" type="button">Salvar reflexão</button>
+          <button class="secondary" id="downloadReflection" type="button">Baixar reflexão</button>
+        </div>
+        <div id="reflectionMessage" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <section id="helpView" class="view hidden">
+      <div class="panel">
+        <h2>📚 Guia da oficina</h2>
+        <h3>1. Planejamento</h3>
+        <p>Definam o objetivo, o público, o formato e as ideias centrais. Pesquisem em fontes confiáveis e anotem as referências.</p>
+        <h3>2. Escrita do roteiro</h3>
+        <p>Organizem abertura, apresentação do tema, desenvolvimento, transições e encerramento. Escrevam falas naturais e distribuam a participação.</p>
+        <h3>3. Gravação</h3>
+        <p>Testem o microfone, evitem ruídos, falem com clareza e ouçam a prévia antes de salvar.</p>
+        <h3>4. Revisão por pares</h3>
+        <ul>
+          <li>O tema e o objetivo ficam claros?</li>
+          <li>Há começo, desenvolvimento e conclusão?</li>
+          <li>Os argumentos são coerentes e as fontes verificáveis?</li>
+          <li>Todos participaram de forma equilibrada?</li>
+          <li>O áudio está inteligível e sem ruídos excessivos?</li>
+          <li>Há autorização para uso de vozes, músicas e efeitos?</li>
+        </ul>
+        <h3>5. Publicação responsável</h3>
+        <p>Não divulguem dados pessoais. Antes de publicar vozes ou imagens, confirmem as autorizações necessárias, especialmente quando houver menores de idade.</p>
+        <div class="notice">
+          <strong>Sobre privacidade:</strong> neste protótipo, “público” e “privado” controlam a exibição na biblioteca local. Não há servidor, autenticação segura ou compartilhamento real entre dispositivos. Para uso institucional, é necessário implementar backend, armazenamento protegido e autorização no servidor.
+        </div>
+      </div>
+    </section>
+  </section>
+</main>
+
+<footer>Vozes em Pauta · Oficina de podcast de Língua Portuguesa<br>Professora Bárbara Vitória</footer>
+
+<!-- A biblioteca é carregada de um CDN. A conversão não será simulada se ela falhar. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lamejs/1.2.1/lame.min.js"></script>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const STORAGE_USERS = "vozes_pauta_users_v1";
+const STORAGE_SESSION = "vozes_pauta_session_v1";
+const DB_NAME = "VozesEmPautaDB";
+const DB_VERSION = 1;
+
+let currentUser = null;
+let currentScript = "";
+let recording = null;
+let microphoneStream = null;
+let mediaRecorder = null;
+let recordedChunks = [];
+let previewBlob = null;
+let previewUrl = null;
+let recordingStartedAt = 0;
+let timerInterval = null;
+let db = null;
+let conversionInProgress = false;
+
+function readUsers() {
+  try { return JSON.parse(localStorage.getItem(STORAGE_USERS) || "{}"); }
+  catch { return {}; }
+}
+function writeUsers(users) {
+  localStorage.setItem(STORAGE_USERS, JSON.stringify(users));
+}
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, ch => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;"
+  })[ch]);
+}
+function safeFilename(name) {
+  return (name || "episodio").normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-zA-Z0-9_-]+/g, "-")
+    .replace(/^-+|-+$/g, "").slice(0, 70) || "episodio";
+}
+function announce(id, message, type = "") {
+  const el = $(id);
+  el.className = type ? "notice " + type : "";
+  el.textContent = message;
+}
+function groupKey() {
+  return currentUser ? currentUser.username : "";
+}
+function userRecord() {
+  const users = readUsers();
+  return users[groupKey()];
+}
+function getPlaylists() {
+  return userRecord()?.playlists || [];
+}
+function savePlaylists(playlists) {
+  const users = readUsers();
+  if (!users[groupKey()]) return;
+  users[groupKey()].playlists = playlists;
+  writeUsers(users);
+}
+function openDatabase() {
+  return new Promise((resolve, reject) => {
+    if (!("indexedDB" in window)) {
+      reject(new Error("Este navegador não oferece armazenamento IndexedDB."));
+      return;
+    }
+    const request = indexedDB.open(DB_NAME, DB_VERSION);
+    request.onupgradeneeded = () => {
+      const database = request.result;
+      if (!database.objectStoreNames.contains("episodes")) {
+        const store = database.createObjectStore("episodes", { keyPath: "id" });
+        store.createIndex("owner", "owner", { unique: false });
+      }
+    };
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error("Falha ao abrir a biblioteca."));
+  });
+}
+function dbRequest(mode, operation) {
+  return new Promise((resolve, reject) => {
+    if (!db) return reject(new Error("A biblioteca ainda não foi aberta."));
+    const transaction = db.transaction("episodes", mode);
+    const request = operation(transaction.objectStore("episodes"));
+    request.onsuccess = () => resolve(request.result);
+    request.onerror = () => reject(request.error || new Error("Erro na biblioteca."));
+    transaction.onabort = () => reject(transaction.error || new Error("Operação cancelada."));
+  });
+}
+function allEpisodes() {
+  return dbRequest("readonly", store => store.getAll());
+}
+function saveEpisodeRecord(episode) {
+  return dbRequest("readwrite", store => store.put(episode));
+}
+function deleteEpisodeRecord(id) {
+  return dbRequest("readwrite", store => store.delete(id));
+}
+function makeId() {
+  return (crypto.randomUUID ? crypto.randomUUID() :
+    Date.now() + "-" + Math.random().toString(36).slice(2));
+}
+
+function showApp() {
+  $("authView").classList.add("hidden");
+  $("appView").classList.remove("hidden");
+  $("logoutBtn").classList.remove("hidden");
+  $("userLabel").textContent = "Grupo: " + currentUser.groupName;
+  showView("home");
+  refreshPlaylists();
+  renderEpisodes();
+  renderShowcase();
+}
+function showAuth() {
+  currentUser = null;
+  localStorage.removeItem(STORAGE_SESSION);
+  $("authView").classList.remove("hidden");
+  $("appView").classList.add("hidden");
+  $("logoutBtn").classList.add("hidden");
+  $("userLabel").textContent = "";
+  closeViewSections();
+}
+function closeViewSections() {
+  ["scriptView","studioView","episodesView","showcaseView","reflectionView","helpView"]
+    .forEach(id => $(id).classList.add("hidden"));
+}
+function showView(view) {
+  closeViewSections();
+  if (view === "home") {
+    $("menuGrid").classList.remove("hidden");
+    return;
+  }
+  $("menuGrid").classList.add("hidden");
+  const section = $(view + "View");
+  if (section) section.classList.remove("hidden");
+  if (view === "episodes") renderEpisodes();
+  if (view === "showcase") renderShowcase();
+  if (view === "studio") refreshPlaylists();
+}
+$("menuGrid").addEventListener("click", event => {
+  const button = event.target.closest("[data-view]");
+  if (button) showView(button.dataset.view);
+});
+
+$("authMode").addEventListener("change", () => {
+  const creating = $("authMode").value === "create";
+  $("groupNameField").classList.toggle("hidden", !creating);
+  $("authBtn").textContent = creating ? "Criar meu grupo" : "Entrar no estúdio";
+  $("password").autocomplete = creating ? "new-password" : "current-password";
+  $("authMessage").textContent = "";
+});
+
+$("authBtn").addEventListener("click", () => {
+  const mode = $("authMode").value;
+  const username = $("username").value.trim().toLowerCase();
+  const password = $("password").value;
+  const groupName = $("groupName").value.trim();
+  const users = readUsers();
+
+  if (!/^[a-z0-9_-]{3,40}$/.test(username)) {
+    announce("authMessage", "O usuário deve ter de 3 a 40 caracteres: letras sem acento, números, _ ou -.", "error");
+    return;
+  }
+  if (password.length < 4) {
+    announce("authMessage", "Use uma senha de pelo menos 4 caracteres para este protótipo.", "error");
+    return;
+  }
+
+  if (mode === "create") {
+    if (groupName.length < 2) {
+      announce("authMessage", "Informe um nome para o grupo.", "error");
+      return;
+    }
+    if (users[username]) {
+      announce("authMessage", "Esse usuário já existe neste navegador. Escolha outro ou entre na conta.", "error");
+      return;
+    }
+    // Demonstração local: senha não é enviada a um servidor.
+    // Não usar este mecanismo como autenticação de produção.
+    users[username] = {
+      username, groupName, password,
+      playlists: [], reflection: { learned:"", strengths:"", improve:"" }
+    };
+    writeUsers(users);
+  } else {
+    if (!users[username] || users[username].password !== password) {
+      announce("authMessage", "Usuário ou senha incorretos neste navegador.", "error");
+      return;
+    }
+  }
+
+  currentUser = {
+    username,
+    groupName: users[username].groupName
+  };
+  localStorage.setItem(STORAGE_SESSION, username);
+  $("password").value = "";
+  showApp();
+});
+$("logoutBtn").addEventListener("click", showAuth);
+
+async function loadSession() {
+  try {
+    db = await openDatabase();
+  } catch (error) {
+    console.error(error);
+    announce("authMessage",
+      "Não foi possível abrir a biblioteca local. Verifique as permissões do navegador.", "error");
+  }
+  const username = localStorage.getItem(STORAGE_SESSION);
+  const user = username && readUsers()[username];
+  if (user) {
+    currentUser = { username, groupName: user.groupName };
+    showApp();
+  }
+}
+loadSession();
+
+function getFormText(id) {
+  return $(id).value.trim();
+}
+function generateScriptText() {
+  const title = getFormText("scriptTitle") || "Podcast sem título";
+  const topic = getFormText("topic");
+  if (!topic) {
+    announce("scriptMessage", "Informe o tema central antes de gerar o roteiro.", "error");
+    return;
+  }
+  const format = $("format").value;
+  const hosts = Number($("hosts").value);
+  const duration = Number($("duration").value);
+  const audience = getFormText("audience") || "público definido pelo grupo";
+  const tone = $("tone").value;
+  const guest = getFormText("guest");
+  const ideas = getFormText("ideas") || "Selecionar ideias centrais e confirmar as informações em fontes confiáveis.";
+  const closing = getFormText("closing") || "Que pergunta ou reflexão queremos deixar para quem nos ouviu?";
+  const speakers = Array.from({length: hosts}, (_, i) => "Apresentador(a) " + (i + 1));
+  const lines = [];
+  const add = (speaker, text) => lines.push(speaker + ": " + text);
+
+  lines.push("VOZES EM PAUTA — ROTEIRO DE PODCAST");
+  lines.push("Título: " + title);
+  lines.push("Tema: " + topic);
+  lines.push("Formato: " + format);
+  lines.push("Público: " + audience);
+  lines.push("Tom: " + tone);
+  lines.push("Duração planejada: " + duration + " minutos");
+  lines.push("Apresentadores: " + hosts);
+  if (guest) lines.push("Convidado(a): " + guest);
+  lines.push("");
+  lines.push("1. ABERTURA (aprox. 10% do tempo)");
+  add(speakers[0], "Olá! Está começando " + title + ". Hoje vamos conversar sobre " + topic + ".");
+  if (hosts > 1) add(speakers[1], "Este episódio é para " + audience + ". Nosso objetivo é apresentar ideias, ouvir diferentes perspectivas e pensar criticamente.");
+  if (format === "entrevista" && guest) {
+    add(speakers[Math.min(1, hosts - 1)], "Recebemos " + guest + ". Obrigado(a) por participar. Para começar, você poderia se apresentar e contar sua relação com o tema?");
+  }
+  lines.push("");
+  lines.push("2. CONTEXTUALIZAÇÃO (aprox. 20% do tempo)");
+  add(speakers[0], "Antes de aprofundar o assunto, vamos explicar por que " + topic + " merece atenção.");
+  add(speakers[Math.min(1, hosts - 1)], "O que já sabemos sobre esse tema? Que dúvidas ainda precisamos investigar?");
+  lines.push("");
+  lines.push("3. DESENVOLVIMENTO (aprox. 45% do tempo)");
+  lines.push("Pontos e materiais trazidos pelo grupo:");
+  lines.push(ideas);
+  lines.push("");
+  for (let i = 0; i < hosts; i++) {
+    const role = [
+      "apresenta a primeira ideia e contextualiza",
+      "faz perguntas e aprofunda os argumentos",
+      "apresenta exemplos e contrapontos",
+      "retoma as ideias e verifica as informações",
+      "faz a síntese e conduz a conclusão"
+    ][i % 5];
+    add(speakers[i], "[" + role + "] Uma questão importante sobre " + topic + " é: o que os fatos e as fontes nos mostram?");
+  }
+  if (format === "debate") {
+    add(speakers[0], "Vamos apresentar argumentos diferentes sem atacar pessoas. Qual é a justificativa para cada posição?");
+    add(speakers[Math.min(1, hosts - 1)], "Que evidências sustentam essa ideia? Existe um contraponto que precisamos considerar?");
+  } else if (format === "entrevista") {
+    add(speakers[0], "Qual pergunta ainda não fizemos e que ajudaria nosso público a compreender melhor o assunto?");
+  } else if (format === "noticias") {
+    add(speakers[0], "Vamos distinguir fatos confirmados, opiniões e informações que ainda precisam ser verificadas.");
+  } else if (format === "narrativa") {
+    add(speakers[0], "Vamos conduzir essa história com uma sequência clara, detalhes relevantes e uma reflexão final.");
+  } else if (format === "educativo") {
+    add(speakers[0], "Vamos retomar os conceitos essenciais e apresentar um exemplo para facilitar a compreensão.");
+  } else {
+    add(speakers[0], "Vamos relacionar essas ideias ao cotidiano e ouvir a contribuição de cada integrante.");
+  }
+  lines.push("");
+  lines.push("4. SÍNTESE E ENCERRAMENTO (aprox. 25% do tempo)");
+  add(speakers[0], "Chegamos ao final. Hoje discutimos " + topic + " e percebemos que precisamos olhar para o assunto com atenção e responsabilidade.");
+  add(speakers[Math.min(hosts - 1, 1)], closing);
+  add(speakers[hosts - 1], "Obrigado por ouvir " + title + ". Até o próximo episódio!");
+  lines.push("");
+  lines.push("5. CHECKLIST ANTES DE GRAVAR");
+  [
+    "Conferir a pronúncia de nomes e termos.",
+    "Verificar os dados e registrar as fontes.",
+    "Ensaiar transições e respeitar o tempo.",
+    "Garantir participação equilibrada.",
+    "Evitar dados pessoais e confirmar autorizações.",
+    "Conferir ruídos, volume e clareza da gravação."
+  ].forEach(item => lines.push("☐ " + item));
+
+  currentScript = lines.join("\n");
+  $("scriptOutput").textContent = currentScript;
+  $("scriptOutput").classList.remove("hidden");
+  $("scriptActions").classList.remove("hidden");
+  announce("scriptMessage", "Roteiro inicial criado! Revise, edite e adapte as falas à identidade do grupo.", "good");
+}
+$("generateScript").addEventListener("click", generateScriptText);
+$("clearScript").addEventListener("click", () => {
+  ["scriptTitle","topic","audience","guest","ideas","closing"].forEach(id => $(id).value = "");
+  $("scriptOutput").classList.add("hidden");
+  $("scriptActions").classList.add("hidden");
+  currentScript = "";
+  announce("scriptMessage", "");
+});
+$("copyScript").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(currentScript);
+    announce("scriptMessage", "Roteiro copiado.", "good");
+  } catch {
+    announce("scriptMessage", "Não foi possível copiar automaticamente. Selecione o texto do roteiro e copie manualmente.", "error");
+  }
+});
+$("downloadScript").addEventListener("click", () => {
+  downloadBlob(new Blob([currentScript], {type:"text/plain;charset=utf-8"}),
+    safeFilename(getFormText("scriptTitle")) + "-roteiro.txt");
+});
+$("saveScript").addEventListener("click", () => {
+  if (!currentScript) return;
+  const data = {
+    title: getFormText("scriptTitle") || "Roteiro sem título",
+    text: currentScript,
+    updatedAt: new Date().toISOString()
+  };
+  const users = readUsers();
+  users[groupKey()].savedScript = data;
+  writeUsers(users);
+  announce("scriptMessage", "Roteiro salvo neste navegador para o grupo.", "good");
+});
+
+function refreshPlaylists() {
+  if (!currentUser) return;
+  const playlists = getPlaylists();
+  const studioSelect = $("episodePlaylist");
+  const filterSelect = $("filterPlaylist");
+  const oldStudio = studioSelect.value;
+  const oldFilter = filterSelect.value;
+  studioSelect.innerHTML = '<option value="">Sem playlist</option>' +
+    playlists.map(p => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.name)}</option>`).join("");
+  filterSelect.innerHTML = '<option value="">Todas as playlists</option>' +
+    playlists.map(p => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.name)}</option>`).join("");
+  studioSelect.value = playlists.some(p => p.id === oldStudio) ? oldStudio : "";
+  filterSelect.value = playlists.some(p => p.id === oldFilter) ? oldFilter : "";
+  renderPlaylistList();
+}
+function renderPlaylistList() {
+  const list = $("playlistList");
+  list.innerHTML = "";
+  const playlists = getPlaylists();
+  if (!playlists.length) {
+    list.innerHTML = '<span class="tag">Nenhuma playlist criada</span>';
+    return;
+  }
+  playlists.forEach(playlist => {
+    const wrap = document.createElement("span");
+    wrap.className = "tag";
+    wrap.textContent = playlist.name + " ";
+    const btn = document.createElement("button");
+    btn.className = "small danger";
+    btn.type = "button";
+    btn.textContent = "Excluir";
+    btn.setAttribute("aria-label", "Excluir playlist " + playlist.name);
+    btn.addEventListener("click", () => {
+      if (!confirm("Excluir esta playlist? Os episódios não serão apagados.")) return;
+      savePlaylists(getPlaylists().filter(p => p.id !== playlist.id));
+      allEpisodes().then(items => Promise.all(items
+        .filter(e => e.owner === groupKey() && e.playlistId === playlist.id)
+        .map(e => saveEpisodeRecord({...e, playlistId:""}))))
+        .then(refreshPlaylists).then(renderEpisodes);
+    });
+    wrap.appendChild(btn);
+    list.appendChild(wrap);
+  });
+}
+$("createPlaylist").addEventListener("click", () => {
+  const name = $("playlistName").value.trim();
+  if (name.length < 2) {
+    alert("Informe um nome com pelo menos dois caracteres.");
+    return;
+  }
+  const playlists = getPlaylists();
+  if (playlists.some(p => p.name.toLowerCase() === name.toLowerCase())) {
+    alert("Já existe uma playlist com esse nome.");
+    return;
+  }
+  playlists.push({id:makeId(), name});
+  savePlaylists(playlists);
+  $("playlistName").value = "";
+  refreshPlaylists();
+});
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 30000);
+}
+function formatTime(seconds) {
+  const n = Math.max(0, Math.floor(seconds || 0));
+  return String(Math.floor(n / 60)).padStart(2,"0") + ":" +
+    String(n % 60).padStart(2,"0");
+}
+function updateTimer() {
+  $("timer").textContent = formatTime((Date.now() - recordingStartedAt) / 1000);
+}
+
+async function startRecording() {
+  if (conversionInProgress) return;
+  if (!navigator.mediaDevices?.getUserMedia || !window.MediaRecorder) {
+    throw new Error("Gravação não suportada neste navegador. Abra a plataforma em HTTPS ou localhost e tente novamente.");
+  }
+  if (!window.lamejs?.Mp3Encoder) {
+    throw new Error("A biblioteca de conversão MP3 não carregou. Verifique a conexão com a internet e recarregue a página.");
+  }
+
+  recordedChunks = [];
+  previewBlob = null;
+  $("previewArea").classList.add("hidden");
+  $("recordingError").textContent = "";
+  if (previewUrl) {
+    URL.revokeObjectURL(previewUrl);
+    previewUrl = null;
+  }
+
+  microphoneStream = await navigator.mediaDevices.getUserMedia({
+    audio: {
+      echoCancellation: true,
+      noiseSuppression: true,
+      autoGainControl: true
+    }
+  });
+
+  const supportedTypes = [
+    "audio/webm;codecs=opus",
+    "audio/ogg;codecs=opus",
+    "audio/mp4"
+  ];
+  const mimeType = supportedTypes.find(type =>
+    MediaRecorder.isTypeSupported(type));
+  mediaRecorder = mimeType
+    ? new MediaRecorder(microphoneStream, {mimeType})
+    : new MediaRecorder(microphoneStream);
+
+  mediaRecorder.addEventListener("dataavailable", event => {
+    if (event.data && event.data.size) recordedChunks.push(event.data);
+  });
+
+  mediaRecorder.addEventListener("error", event => {
+    console.error("MediaRecorder error:", event.error);
+    announce("recordingError", "O navegador informou um erro na gravação. Tente novamente.", "error");
+  });
+
+  mediaRecorder.addEventListener("stop", handleRecordingStop, {once:true});
+  mediaRecorder.start(1000);
+  recordingStartedAt = Date.now();
+  timerInterval = setInterval(updateTimer, 250);
+  updateTimer();
+  $("startRecording").disabled = true;
+  $("stopRecording").disabled = false;
+  $("recordingStatus").textContent = "Gravando. Fale com clareza e evite ruídos.";
+}
+
+$("startRecording").addEventListener("click", async () => {
+  $("startRecording").disabled = true;
+  try {
+    await startRecording();
+  } catch (error) {
+    console.error(error);
+    microphoneStream?.getTracks().forEach(track => track.stop());
+    microphoneStream = null;
+    $("startRecording").disabled = false;
+    $("stopRecording").disabled = true;
+    announce("recordingError", error.message || "Não foi possível iniciar a gravação. Verifique a permissão do microfone.", "error");
+    $("recordingStatus").textContent = "Gravação não iniciada.";
+  }
+});
+
+$("stopRecording").addEventListener("click", () => {
+  if (mediaRecorder && mediaRecorder.state !== "inactive") {
+    $("stopRecording").disabled = true;
+    $("recordingStatus").textContent = "Finalizando gravação...";
+    mediaRecorder.stop();
+  }
+});
+
+async function handleRecordingStop() {
+  clearInterval(timerInterval);
+  timerInterval = null;
+  microphoneStream?.getTracks().forEach(track => track.stop());
+  microphoneStream = null;
+  conversionInProgress = true;
+  $("recordingStatus").textContent = "Convertendo o áudio para MP3. Aguarde...";
+  $("startRecording").disabled = true;
+
+  try {
+    if (!recordedChunks.length) {
+      throw new Error("Nenhum dado de áudio foi capturado. Verifique o microfone e tente novamente.");
+    }
+    const sourceType = mediaRecorder?.mimeType || recordedChunks[0].type || "application/octet-stream";
+    const recordedBlob = new Blob(recordedChunks, {type:sourceType});
+    previewBlob = await convertToMP3(recordedBlob);
+    if (!previewBlob || previewBlob.size < 100) {
+      throw new Error("A conversão não produziu um MP3 válido. Faça uma nova gravação.");
+    }
+    previewUrl = URL.createObjectURL(previewBlob);
+    $("audioPreview").src = previewUrl;
+    $("audioPreview").load();
+    $("previewArea").classList.remove("hidden");
+    $("previewInfo").textContent =
+      "Formato: MP3 (audio/mpeg) · Tamanho: " +
+      (previewBlob.size / 1024 / 1024).toFixed(2) + " MB";
+    $("recordingStatus").textContent = "MP3 pronto! Ouça a prévia antes de salvar.";
+    announce("recordingError", "Conversão concluída com sucesso.", "good");
+  } catch (error) {
+    console.error("Falha na conversão MP3:", error);
+    $("recordingStatus").textContent = "Não foi possível gerar o MP3.";
+    announce("recordingError",
+      error.message || "Falha na conversão. Tente gravar novamente ou use outro navegador.", "error");
+  } finally {
+    conversionInProgress = false;
+    $("startRecording").disabled = false;
+    $("stopRecording").disabled = true;
+    mediaRecorder = null;
+  }
+}
+
+async function convertToMP3(blob) {
+  if (!window.lamejs?.Mp3Encoder) {
+    throw new Error("A biblioteca lamejs não está disponível.");
+  }
+  const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!AudioContextClass || !window.OfflineAudioContext) {
+    throw new Error("Este navegador não oferece as ferramentas de áudio necessárias para a conversão.");
+  }
+
+  const audioContext = new AudioContextClass();
+  try {
+    const bytes = await blob.arrayBuffer();
+    let decoded;
+    try {
+      decoded = await audioContext.decodeAudioData(bytes.slice(0));
+    } catch (error) {
+      throw new Error("O navegador não conseguiu decodificar o áudio gravado (" +
+        (blob.type || "formato desconhecido") +
+        "). Atualize o navegador ou tente outro dispositivo.");
+    }
+
+    const channels = Math.min(2, decoded.numberOfChannels);
+    const sampleRate = 44100;
+    const frames = Math.max(1, Math.ceil(decoded.duration * sampleRate));
+    const offline = new OfflineAudioContext(channels, frames, sampleRate);
+    const source = offline.createBufferSource();
+    source.buffer = decoded;
+    source.connect(offline.destination);
+    source.start(0);
+    const resampled = await offline.startRendering();
+
+    const encoder = new lamejs.Mp3Encoder(channels, sampleRate, 128);
+    const left = resampled.getChannelData(0);
+    const right = channels > 1 ? resampled.getChannelData(1) : null;
+    const blockSize = 1152;
+    const mp3Parts = [];
+
+    function floatToInt16(input) {
+      const output = new Int16Array(input.length);
+      for (let i = 0; i < input.length; i++) {
+        const value = Math.max(-1, Math.min(1, input[i]));
+        output[i] = value < 0 ? value * 32768 : value * 32767;
+      }
+      return output;
+    }
+
+    for (let offset = 0; offset < left.length; offset += blockSize) {
+      const leftPart = floatToInt16(
+        left.subarray(offset, Math.min(offset + blockSize, left.length))
+      );
+      let encoded;
+      if (right) {
+        const rightPart = floatToInt16(
+          right.subarray(offset, Math.min(offset + blockSize, right.length))
+        );
+        encoded = encoder.encodeBuffer(leftPart, rightPart);
+      } else {
+        encoded = encoder.encodeBuffer(leftPart);
+      }
+      if (encoded.length) mp3Parts.push(new Uint8Array(encoded));
+    }
+
+    const last = encoder.flush();
+    if (last.length) mp3Parts.push(new Uint8Array(last));
+    if (!mp3Parts.length) {
+      throw new Error("A conversão não gerou dados MP3.");
+    }
+    return new Blob(mp3Parts, {type:"audio/mpeg"});
+  } finally {
+    try { await audioContext.close(); } catch {}
+  }
+}
+
+$("downloadMP3").addEventListener("click", () => {
+  if (!previewBlob || previewBlob.type !== "audio/mpeg") {
+    announce("recordingError", "Não há um MP3 válido para baixar. Grave novamente.", "error");
+    return;
+  }
+  const title = getFormText("episodeTitle") || "vozes-em-pauta";
+  downloadBlob(previewBlob, safeFilename(title) + ".mp3");
+});
+
+$("saveEpisode").addEventListener("click", async () => {
+  if (!previewBlob || previewBlob.type !== "audio/mpeg") {
+    announce("recordingError", "Conclua a conversão para MP3 antes de salvar.", "error");
+    return;
+  }
+  if (!db) {
+    announce("recordingError", "A biblioteca local não está disponível neste navegador.", "error");
+    return;
+  }
+  const title = getFormText("episodeTitle") || "Episódio sem título";
+  const episode = {
+    id: makeId(),
+    owner: groupKey(),
+    groupName: currentUser.groupName,
+    title,
+    visibility: $("episodeVisibility").value,
+    playlistId: $("episodePlaylist").value,
+    mimeType: "audio/mpeg",
+    blob: previewBlob,
+    script: currentScript || userRecord()?.savedScript?.text || "",
+    createdAt: new Date().toISOString()
+  };
+  try {
+    await saveEpisodeRecord(episode);
+    announce("recordingError", "Episódio MP3 salvo na biblioteca deste navegador.", "good");
+    $("recordingStatus").textContent = "Episódio salvo!";
+    renderEpisodes();
+    renderShowcase();
+  } catch (error) {
+    console.error(error);
+    announce("recordingError", "Não foi possível salvar. O armazenamento pode estar cheio. Baixe o MP3 antes de tentar novamente.", "error");
+  }
+});
+
+$("discardRecording").addEventListener("click", () => {
+  if (previewUrl) URL.revokeObjectURL(previewUrl);
+  previewUrl = null;
+  previewBlob = null;
+  $("audioPreview").removeAttribute("src");
+  $("audioPreview").load();
+  $("previewArea").classList.add("hidden");
+  $("recordingStatus").textContent = "Gravação descartada. Você pode gravar novamente.";
+  announce("recordingError", "");
+});
+
+async function renderEpisodes() {
+  if (!currentUser || !db) return;
+  const container = $("episodeList");
+  try {
+    const all = await allEpisodes();
+    const playlistFilter = $("filterPlaylist").value;
+    const episodes = all.filter(e => e.owner === groupKey() &&
+      (!playlistFilter || e.playlistId === playlistFilter))
+      .sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+    container.innerHTML = "";
+    if (!episodes.length) {
+      container.innerHTML = '<div class="empty">🎧 Seus episódios aparecerão aqui depois que você salvar uma gravação.</div>';
+      return;
+    }
+    episodes.forEach(episode => container.appendChild(createEpisodeCard(episode, true)));
+  } catch (error) {
+    console.error(error);
+    container.textContent = "Não foi possível carregar os episódios.";
+  }
+}
+$("filterPlaylist").addEventListener("change", renderEpisodes);
+
+async function renderShowcase() {
+  if (!currentUser || !db) return;
+  const container = $("publicEpisodes");
+  try {
+    const all = await allEpisodes();
+    const episodes = all.filter(e => e.visibility === "public")
+      .sort((a,b) => b.createdAt.localeCompare(a.createdAt));
+    container.innerHTML = "";
+    if (!episodes.length) {
+      container.innerHTML = '<div class="empty">🌟 Ainda não há episódios públicos neste navegador.</div>';
+      return;
+    }
+    episodes.forEach(episode => container.appendChild(createEpisodeCard(episode, episode.owner === groupKey())));
+  } catch (error) {
+    console.error(error);
+    container.textContent = "Não foi possível carregar a mostra.";
+  }
+}
+
+function createEpisodeCard(episode, isOwner) {
+  const card = document.createElement("article");
+  card.className = "card episode";
+  const playlist = getPlaylists().find(p => p.id === episode.playlistId);
+  const date = new Date(episode.createdAt).toLocaleString("pt-BR");
+  const header = document.createElement("div");
+  const title = document.createElement("h3");
+  title.textContent = episode.title;
+  header.appendChild(title);
+  const meta = document.createElement("p");
+  meta.innerHTML = `<span class="tag ${episode.visibility === "public" ? "public" : "private"}">${episode.visibility === "public" ? "Público local" : "Privado"}</span> ` +
+    `<span class="tag">${escapeHTML(episode.groupName)}</span>`;
+  if (playlist) {
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = playlist.name;
+    meta.appendChild(tag);
+  }
+  const dateText = document.createElement("small");
+  dateText.textContent = "Criado em " + date;
+  header.append(meta, dateText);
+  card.appendChild(header);
+
+  const audio = document.createElement("audio");
+  audio.controls = true;
+  audio.preload = "none";
+  audio.src = URL.createObjectURL(episode.blob);
+  card.appendChild(audio);
+
+  const download = document.createElement("button");
+  download.className = "secondary";
+  download.textContent = "⬇️ Baixar MP3";
+  download.addEventListener("click", () => {
+    downloadBlob(episode.blob, safeFilename(episode.title) + ".mp3");
+  });
+  card.appendChild(download);
+
+  if (episode.script) {
+    const details = document.createElement("details");
+    const summary = document.createElement("summary");
+    summary.textContent = "Ver roteiro associado";
+    const pre = document.createElement("pre");
+    pre.className = "output";
+    pre.textContent = episode.script;
+    details.append(summary, pre);
+    card.appendChild(details);
+  }
+
+  if (isOwner) {
+    const visibility = document.createElement("button");
+    visibility.className = "secondary";
+    visibility.textContent = episode.visibility === "public"
+      ? "Tornar privado" : "Tornar público";
+    visibility.addEventListener("click", async () => {
+      const updated = {...episode, visibility:
+        episode.visibility === "public" ? "private" : "public"};
+      await saveEpisodeRecord(updated);
+      renderEpisodes();
+      renderShowcase();
+    });
+    const changePlaylist = document.createElement("select");
+    changePlaylist.setAttribute("aria-label", "Alterar playlist");
+    changePlaylist.innerHTML = '<option value="">Sem playlist</option>' +
+      getPlaylists().map(p => `<option value="${escapeHTML(p.id)}">${escapeHTML(p.name)}</option>`).join("");
+    changePlaylist.value = episode.playlistId || "";
+    changePlaylist.addEventListener("change", async () => {
+      await saveEpisodeRecord({...episode, playlistId:changePlaylist.value});
+      renderEpisodes();
+    });
+    const remove = document.createElement("button");
+    remove.className = "danger";
+    remove.textContent = "Excluir episódio";
+    remove.addEventListener("click", async () => {
+      if (!confirm("Excluir este episódio deste navegador? Baixe uma cópia antes, se precisar mantê-lo.")) return;
+      await deleteEpisodeRecord(episode.id);
+      renderEpisodes();
+      renderShowcase();
+    });
+    const actions = document.createElement("div");
+    actions.className = "actions";
+    actions.append(visibility, changePlaylist, remove);
+    card.appendChild(actions);
+  }
+  return card;
+}
+
+function loadReflection() {
+  const data = userRecord()?.reflection || {};
+  $("reflectionLearned").value = data.learned || "";
+  $("reflectionStrengths").value = data.strengths || "";
+  $("reflectionImprove").value = data.improve || "";
+}
+$("saveReflection").addEventListener("click", () => {
+  const users = readUsers();
+  users[groupKey()].reflection = {
+    learned: getFormText("reflectionLearned"),
+    strengths: getFormText("reflectionStrengths"),
+    improve: getFormText("reflectionImprove")
+  };
+  writeUsers(users);
+  announce("reflectionMessage", "Reflexão salva neste navegador.", "good");
+});
+$("downloadReflection").addEventListener("click", () => {
+  const text = [
+    "REFLEXÃO — VOZES EM PAUTA",
+    "Grupo: " + currentUser.groupName,
+    "",
+    "O que aprendemos:",
+    getFormText("reflectionLearned"),
+    "",
+    "Pontos fortes:",
+    getFormText("reflectionStrengths"),
+    "",
+    "O que melhorar:",
+    getFormText("reflectionImprove")
+  ].join("\n");
+  downloadBlob(new Blob([text], {type:"text/plain;charset=utf-8"}), "reflexao-vozes-em-pauta.txt");
+});
+
+// Recupera os campos da reflexão quando a equipe abre a seção.
+document.querySelector('[data-view="reflection"]').addEventListener("click", loadReflection);
+</script>
 </body>
 </html>
