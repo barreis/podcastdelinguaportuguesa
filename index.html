@@ -109,10 +109,6 @@
         ::-webkit-scrollbar-thumb:hover {
             background: #6E1327;
         }
-        /* Visualizer Wave Animation */
-        .wave-bar {
-            transition: height 0.1s ease;
-        }
     </style>
 </head>
 <body class="bg-creme-pattern min-h-screen flex flex-col font-sans antialiased text-marrom-800">
@@ -142,7 +138,7 @@
                     <button onclick="changeFontSize(0.1)" title="Aumentar texto" class="px-2 py-1 text-xs font-bold text-creme-200 hover:bg-marrom-700 rounded transition" aria-label="Aumentar fonte">+A</button>
                 </div>
 
-                <!-- Status do Grupo / Login -->
+                <!-- Status do Grupo / Login / Perfil -->
                 <div id="user-status-container">
                     <!-- Preenchido dinamicamente via JS -->
                 </div>
@@ -160,17 +156,18 @@
             <button onclick="navigateTo('vitrine')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-podcast mr-1.5"></i>Vitrine Pública</button>
             <button onclick="navigateTo('revisao')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-clipboard-check mr-1.5"></i>Revisão & Avaliação</button>
             <button onclick="navigateTo('guia')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap"><i class="fa-solid fa-book-bookmark mr-1.5"></i>Guia da Oficina</button>
+            <button onclick="navigateTo('perfil')" class="nav-link px-3 py-1.5 rounded-md hover:bg-vinho-700 whitespace-nowrap text-dourado-400 font-bold"><i class="fa-solid fa-id-card mr-1.5"></i>Perfil do Grupo</button>
         </div>
     </nav>
 
     <!-- MAIN CONTENT CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8" id="app-viewport">
         
-        <!-- SEÇÃO 1: TELA DE BOAS-VINDAS / MOTIVACIONAL (HOME) -->
+        <!-- SEÇÃO 1: TELA INICIAL (HOME) -->
         <section id="sec-home" class="space-y-8 animate-fade-in">
             
-            <!-- Banner Motivacional Assinado -->
-            <div class="bg-gradient-to-r from-vinho-800 via-vinho-700 to-marrom-800 text-creme-50 rounded-2xl p-6 sm:p-10 shadow-xl border-2 border-dourado-500/40 relative overflow-hidden">
+            <!-- Banner Motivacional Assinado (VISÍVEL SOMENTE ANTES DO LOGIN) -->
+            <div id="professora-banner" class="bg-gradient-to-r from-vinho-800 via-vinho-700 to-marrom-800 text-creme-50 rounded-2xl p-6 sm:p-10 shadow-xl border-2 border-dourado-500/40 relative overflow-hidden">
                 <div class="absolute -right-10 -bottom-10 opacity-10 text-creme-100 text-9xl pointer-events-none">
                     <i class="fa-solid fa-quote-right"></i>
                 </div>
@@ -199,39 +196,96 @@
                 </div>
             </div>
 
-            <!-- CARD DE AUTENTICAÇÃO DO GRUPO (Caso não esteja logado) -->
-            <div id="auth-box" class="bg-creme-100 border-2 border-marrom-300 rounded-2xl p-6 shadow-md max-w-xl mx-auto">
-                <div class="text-center mb-6">
-                    <div class="inline-flex items-center justify-center w-12 h-12 bg-vinho-100 text-vinho-700 rounded-full mb-2">
-                        <i class="fa-solid fa-users text-xl"></i>
+            <!-- DASHBOARD DE BOAS-VINDAS DO GRUPO (VISÍVEL SOMENTE APÓS O LOGIN) -->
+            <div id="group-welcome-banner" class="hidden bg-gradient-to-r from-vinho-900 via-vinho-800 to-marrom-900 text-creme-50 rounded-2xl p-6 sm:p-8 shadow-xl border-2 border-dourado-500">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <span class="bg-dourado-500 text-marrom-900 text-xs font-bold uppercase px-3 py-1 rounded-full">Painel da Equipe</span>
+                        <h1 class="text-2xl sm:text-4xl font-display font-bold mt-2" id="welcome-team-name">Bem-vindos!</h1>
+                        <p class="text-xs sm:text-sm text-creme-200 mt-1">Sua oficina de podcast está pronta. Escolha uma das etapas abaixo para continuar o seu projeto.</p>
                     </div>
-                    <h2 class="text-2xl font-display font-bold text-marrom-900">Acesso das Equipes</h2>
-                    <p class="text-xs sm:text-sm text-marrom-600">Identifique o seu grupo para iniciar os trabalhos no estúdio</p>
+                    <div class="flex items-center space-x-3">
+                        <button onclick="navigateTo('perfil')" class="bg-creme-100 hover:bg-creme-200 text-marrom-900 font-bold text-xs px-4 py-2.5 rounded-xl border border-dourado-400 transition flex items-center space-x-2">
+                            <i class="fa-solid fa-id-card text-vinho-700"></i>
+                            <span>Ver Perfil & Configurações</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CARD DE AUTENTICAÇÃO E RECUPERAÇÃO DO GRUPO (ANTES DO LOGIN) -->
+            <div id="auth-box" class="bg-white border-2 border-marrom-300 rounded-2xl p-6 shadow-md max-w-xl mx-auto">
+                
+                <!-- Abas de Navegação do Formulário -->
+                <div class="flex border-b border-marrom-200 mb-6">
+                    <button id="tab-btn-login" onclick="switchAuthTab('login')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700">
+                        <i class="fa-solid fa-right-to-bracket mr-1.5"></i>Entrar
+                    </button>
+                    <button id="tab-btn-register" onclick="switchAuthTab('register')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-marrom-600 hover:text-marrom-900">
+                        <i class="fa-solid fa-user-plus mr-1.5"></i>Criar Grupo
+                    </button>
+                    <button id="tab-btn-reset" onclick="switchAuthTab('reset')" class="flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-marrom-600 hover:text-marrom-900">
+                        <i class="fa-solid fa-key mr-1.5"></i>Redefinir Senha
+                    </button>
                 </div>
 
-                <form id="form-auth" onsubmit="handleAuth(event)" class="space-y-4">
+                <!-- 1. FORMULÁRIO DE LOGIN -->
+                <form id="form-login" onsubmit="handleLogin(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="team-name">Nome da Equipe</label>
-                        <input type="text" id="team-name" required placeholder="Ex: Equipe Palavra Viva" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 focus:border-transparent outline-none text-sm bg-white">
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="login-username">Usuário do Grupo</label>
+                        <input type="text" id="login-username" required placeholder="Ex: palavraviva01" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
                     </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="username">Usuário do Grupo</label>
-                            <input type="text" id="username" required placeholder="palavraviva01" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 focus:border-transparent outline-none text-sm bg-white">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="password">Senha</label>
-                            <input type="password" id="password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 focus:border-transparent outline-none text-sm bg-white">
-                        </div>
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="login-password">Senha</label>
+                        <input type="password" id="login-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
                     </div>
                     <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
                         <i class="fa-solid fa-right-to-bracket"></i>
-                        <span>Entrar no Estúdio do Grupo</span>
+                        <span>Entrar na Conta do Grupo</span>
                     </button>
-                    <p class="text-xs text-center text-marrom-600 italic">
-                        * Protótipo funcional com armazenamento local de dados no navegador.
-                    </p>
                 </form>
+
+                <!-- 2. FORMULÁRIO DE CADASTRO -->
+                <form id="form-register" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-team-name">Nome da Equipe / Grupo</label>
+                        <input type="text" id="reg-team-name" required placeholder="Ex: Equipe Palavra Viva" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-username">Usuário do Grupo (Login)</label>
+                        <input type="text" id="reg-username" required placeholder="Ex: palavraviva01" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-email">E-mail para Recuperação de Senha (Opcional)</label>
+                        <input type="email" id="reg-email" placeholder="grupo@escola.edu.br" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reg-password">Criar Senha</label>
+                        <input type="password" id="reg-password" required placeholder="••••••••" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
+                    </div>
+                    <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-user-check"></i>
+                        <span>Cadastrar Meu Grupo</span>
+                    </button>
+                </form>
+
+                <!-- 3. FORMULÁRIO DE REDEFINIÇÃO DE SENHA -->
+                <form id="form-reset" onsubmit="handleResetPassword(event)" class="space-y-4 hidden">
+                    <p class="text-xs text-marrom-600">Informe o e-mail ou o usuário cadastrado para redefinir a senha do seu grupo.</p>
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reset-identifier">E-mail ou Usuário do Grupo</label>
+                        <input type="text" id="reset-identifier" required placeholder="digite o e-mail ou usuário" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-marrom-700 uppercase mb-1" for="reset-new-password">Nova Senha</label>
+                        <input type="password" id="reset-new-password" required placeholder="Nova senha" class="w-full px-4 py-2.5 rounded-lg border border-marrom-300 focus:ring-2 focus:ring-vinho-700 outline-none text-sm bg-creme-50">
+                    </div>
+                    <button type="submit" class="w-full btn-vinho font-bold py-3 px-6 rounded-lg text-sm uppercase tracking-wider flex items-center justify-center space-x-2 shadow-md">
+                        <i class="fa-solid fa-rotate-left"></i>
+                        <span>Redefinir Senha Agora</span>
+                    </button>
+                </form>
+
             </div>
 
             <!-- MENU PRINCIPAL EM CARTÕES ILUSTRADOS GRANDES -->
@@ -355,6 +409,83 @@
             </div>
         </section>
 
+        <!-- SEÇÃO: PERFIL E CONFIGURAÇÕES DO GRUPO -->
+        <section id="sec-perfil" class="hidden space-y-6">
+            <div class="border-b border-marrom-300 pb-4">
+                <h2 class="text-2xl font-display font-bold text-vinho-800 flex items-center space-x-2">
+                    <i class="fa-solid fa-id-card text-dourado-600"></i>
+                    <span>Perfil e Dados do Grupo</span>
+                </h2>
+                <p class="text-sm text-marrom-600">Gerencie informações do seu grupo, e-mail de recuperação e senha</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- Dados do Grupo -->
+                <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-users text-vinho-700"></i>
+                        <span>Informações da Conta</span>
+                    </h3>
+
+                    <form id="form-update-profile" onsubmit="handleUpdateProfile(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome da Equipe</label>
+                            <input type="text" id="profile-team-name" required class="w-full p-2.5 rounded-lg border border-marrom-300 text-sm bg-creme-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Nome de Usuário (Login)</label>
+                            <input type="text" id="profile-username" readonly class="w-full p-2.5 rounded-lg border border-marrom-200 text-sm bg-gray-100 font-mono text-marrom-600 cursor-not-allowed">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">E-mail para Recuperação de Senha</label>
+                            <input type="email" id="profile-email" placeholder="grupo@escola.edu.br" class="w-full p-2.5 rounded-lg border border-marrom-300 text-sm bg-creme-50">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Integrantes da Equipe (Opcional)</label>
+                            <input type="text" id="profile-members" placeholder="Ex: Ana, Bruno, Carlos, Daniela" class="w-full p-2.5 rounded-lg border border-marrom-300 text-sm bg-creme-50">
+                        </div>
+
+                        <button type="submit" class="btn-vinho py-2.5 px-6 rounded-lg text-sm font-bold flex items-center space-x-2">
+                            <i class="fa-solid fa-floppy-disk"></i>
+                            <span>Salvar Alterações do Perfil</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Estatísticas e Resumo do Grupo -->
+                <div class="lg:col-span-5 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
+                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
+                        <i class="fa-solid fa-chart-pie text-terracota-500"></i>
+                        <span>Resumo do Grupo</span>
+                    </h3>
+
+                    <div class="space-y-3 text-sm">
+                        <div class="flex justify-between items-center p-3 bg-creme-100 rounded-lg">
+                            <span class="font-medium text-marrom-800"><i class="fa-solid fa-file-pen mr-2 text-vinho-700"></i>Roteiros Salvos:</span>
+                            <span id="stat-scripts-count" class="font-bold text-vinho-800">0</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-creme-100 rounded-lg">
+                            <span class="font-medium text-marrom-800"><i class="fa-solid fa-microphone mr-2 text-terracota-500"></i>Episódios Gravados:</span>
+                            <span id="stat-episodes-count" class="font-bold text-terracota-600">0</span>
+                        </div>
+                        <div class="flex justify-between items-center p-3 bg-creme-100 rounded-lg">
+                            <span class="font-medium text-marrom-800"><i class="fa-solid fa-tower-broadcast mr-2 text-emerald-600"></i>Episódios Públicos:</span>
+                            <span id="stat-public-count" class="font-bold text-emerald-600">0</span>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t">
+                        <button onclick="logoutUser()" class="w-full bg-red-100 hover:bg-red-200 text-red-800 py-2.5 px-4 rounded-lg font-bold text-sm flex items-center justify-center space-x-2 transition">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                            <span>Sair da Conta do Grupo</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
         <!-- SEÇÃO 2: GERADOR INTELIGENTE DE ROTEIROS -->
         <section id="sec-roteiros" class="hidden space-y-6">
             <div class="flex items-center justify-between border-b border-marrom-300 pb-4">
@@ -399,7 +530,7 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Duração Est.</option>
+                            <label class="block text-xs font-bold text-marrom-700 uppercase mb-1">Duração Est.</label>
                             <select id="script-duration" class="w-full px-3 py-2 rounded-lg border border-marrom-300 text-sm focus:ring-2 focus:ring-vinho-700 outline-none bg-white">
                                 <option value="3 minutos">3 minutos</option>
                                 <option value="5 minutos">5 minutos</option>
@@ -526,7 +657,7 @@
                         </div>
                     </div>
 
-                    <!-- MESA DE SOM / VISUALIZADOR DE GRAVAÇÃO -->
+                    <!-- MESA DE SOM / VISUALIZADOR CANVAS DE GRAVAÇÃO -->
                     <div class="bg-marrom-900 rounded-2xl p-6 text-creme-100 flex flex-col items-center justify-center space-y-4 border-2 border-dourado-500 shadow-inner relative overflow-hidden">
                         
                         <!-- Indicador REC -->
@@ -540,17 +671,9 @@
                             00:00
                         </div>
 
-                        <!-- VU Meter / Audio Waves Container -->
-                        <div id="visualizer-container" class="w-full h-16 flex items-center justify-center space-x-1.5 px-4">
-                            <!-- Barras estáticas/dinâmicas -->
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-3"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-6"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-10"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-4"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-8"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-12"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-5"></div>
-                            <div class="wave-bar w-2 bg-vinho-600 rounded-full h-9"></div>
+                        <!-- Visualizador Canvas da Onda Sonora -->
+                        <div class="w-full h-20 bg-marrom-800 rounded-xl overflow-hidden border border-marrom-700">
+                            <canvas id="audio-visualizer-canvas" class="w-full h-full"></canvas>
                         </div>
 
                         <!-- Botões de Ação do Microfone -->
@@ -678,36 +801,39 @@
             </div>
 
             <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- CHECKLIST DE QUALIDADE -->
+                <!-- CHECKLIST DE QUALIDADE COM PROGRESSO -->
                 <div class="lg:col-span-7 bg-white p-6 rounded-2xl border border-marrom-300 shadow-sm space-y-4">
-                    <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider border-b pb-2 flex items-center space-x-2">
-                        <i class="fa-solid fa-list-check text-vinho-700"></i>
-                        <span>Checklist do Grupo</span>
-                    </h3>
+                    <div class="flex items-center justify-between border-b pb-2">
+                        <h3 class="text-base font-bold text-marrom-900 uppercase tracking-wider flex items-center space-x-2">
+                            <i class="fa-solid fa-list-check text-vinho-700"></i>
+                            <span>Checklist do Grupo</span>
+                        </h3>
+                        <span id="checklist-progress-text" class="text-xs font-bold text-vinho-700 bg-vinho-50 px-2.5 py-1 rounded-full border border-vinho-100">0% Concluído</span>
+                    </div>
 
-                    <div class="space-y-3" id="checklist-items font-sm">
+                    <div class="space-y-3" id="checklist-container">
                         <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
                             <span class="text-sm text-marrom-800">O tema principal e o objetivo do episódio estão claros para o ouvinte?</span>
                         </label>
                         <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
                             <span class="text-sm text-marrom-800">O roteiro segue a estrutura com início, desenvolvimento e encerramento?</span>
                         </label>
                         <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
                             <span class="text-sm text-marrom-800">A dicção e o tom de voz estão compreensíveis e coerentes com a proposta?</span>
                         </label>
                         <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
                             <span class="text-sm text-marrom-800">Todos os integrantes participaram de forma equilibrada nas funções?</span>
                         </label>
                         <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
                             <span class="text-sm text-marrom-800">As informações apresentadas foram devidamente checadas em fontes confiáveis?</span>
                         </label>
                         <label class="flex items-start space-x-3 p-2 rounded hover:bg-creme-50 cursor-pointer">
-                            <input type="checkbox" class="mt-1 rounded text-vinho-700 focus:ring-vinho-700">
+                            <input type="checkbox" onchange="updateChecklistProgress()" class="chk-item mt-1 rounded text-vinho-700 focus:ring-vinho-700">
                             <span class="text-sm text-marrom-800">Efeitos sonoros e trilhas respeitam os direitos autorais e licenças autorizadas?</span>
                         </label>
                     </div>
@@ -753,40 +879,40 @@
                 <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
                     <div class="flex items-center space-x-3 text-vinho-700">
                         <i class="fa-solid fa-diagram-project text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">Aprendizagem Baseada em Projetos</h3>
+                        <h3 class="text-lg font-display font-bold">1. Planejamento & Roteiro</h3>
                     </div>
                     <p class="text-sm text-marrom-700 leading-relaxed">
-                        Os estudantes exercitam todas as etapas reais de uma produção de mídia: desde o brainstorm do tema até a edição final e veiculação pública.
+                        Defina com o grupo o tema, o público-alvo e o formato (entrevista, debate ou crônica). Utilize o Gerador Inteligente para estruturar a abertura, o desenvolvimento e a fala dos integrantes.
                     </p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
                     <div class="flex items-center space-x-3 text-terracota-600">
-                        <i class="fa-solid fa-people-group text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">Aprendizagem Colaborativa</h3>
+                        <i class="fa-solid fa-microphone text-2xl"></i>
+                        <h3 class="text-lg font-display font-bold">2. Gravação & Voz</h3>
                     </div>
                     <p class="text-sm text-marrom-700 leading-relaxed">
-                        Divisão de tarefas ativas: roteirista, locutor, técnico de som e mediador da equipe, incentivando a cooperação.
+                        No Estúdio Online, faça testes de som antes. Garanta um ambiente silencioso, articule bem as palavras e consulte seu roteiro na tela lateral.
                     </p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
                     <div class="flex items-center space-x-3 text-dourado-600">
-                        <i class="fa-solid fa-person-chalkboard text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">Sala de Aula Invertida</h3>
+                        <i class="fa-solid fa-list-check text-2xl"></i>
+                        <h3 class="text-lg font-display font-bold">3. Revisão & Autoavaliação</h3>
                     </div>
                     <p class="text-sm text-marrom-700 leading-relaxed">
-                        Pesquisa prévia de tópicos antes da gravação para permitir debates mais profundos, embasados e argumentativos.
+                        Ouça a prévia do áudio com seu grupo. Utilize o Checklist de Qualidade para garantir que as fontes são confiáveis e que todos participaram.
                     </p>
                 </div>
 
                 <div class="bg-white p-6 rounded-2xl border border-marrom-300 space-y-3">
                     <div class="flex items-center space-x-3 text-emerald-600">
                         <i class="fa-solid fa-bullhorn text-2xl"></i>
-                        <h3 class="text-lg font-display font-bold">Protagonismo Estudantil</h3>
+                        <h3 class="text-lg font-display font-bold">4. Publicação & Vitrine</h3>
                     </div>
                     <p class="text-sm text-marrom-700 leading-relaxed">
-                        Os alunos possuem liberdade para selecionar os assuntos, definir o tom de fala e expressar suas vozes e repertórios.
+                        Defina a visibilidade do episódio (privado para o grupo ou público para a turma). Compartilhe na Vitrine Pública para trocar escutas com outras equipes.
                     </p>
                 </div>
             </div>
@@ -830,7 +956,8 @@
         // ESTADO GLOBAL DO APLICATIVO
         let currentFontScale = 1;
         let currentUser = JSON.parse(localStorage.getItem('vozes_current_user')) || null;
-        
+        let registeredUsers = JSON.parse(localStorage.getItem('vozes_registered_users')) || [];
+
         let scripts = JSON.parse(localStorage.getItem('vozes_scripts')) || [];
         let playlists = JSON.parse(localStorage.getItem('vozes_playlists')) || [
             "Literatura em voz alta",
@@ -848,18 +975,19 @@
                 playlist: 'Crônicas sonoras',
                 visibility: 'Público',
                 date: '28/10/2026',
-                audioUrl: '', // Mock de áudio
+                audioUrl: '',
                 scriptId: null,
                 listens: 14
             }
         ];
 
-        // VARIÁVEIS DO ESTÚDIO DE GRAVAÇÃO
+        // VARIÁVEIS DE ÁUDIO E CANVAS
         let mediaRecorder;
         let audioChunks = [];
         let recordedBlob = null;
         let recordingTimerInterval;
         let recordingSeconds = 0;
+        let audioContext, analyser, animFrameId;
 
         // ACESSIBILIDADE: FONTE
         function changeFontSize(delta) {
@@ -878,23 +1006,89 @@
             renderEpisodesList();
             renderPublicShowcase();
             populateScriptSelectorInStudio();
+            initCanvasVisualizer();
         });
 
-        // AUTENTICAÇÃO E SESSÃO
-        function handleAuth(e) {
-            e.preventDefault();
-            const teamName = document.getElementById('team-name').value.trim();
-            const username = document.getElementById('username').value.trim();
-            
-            if(!teamName || !username) return;
+        // TROCA DE ABAS NA TELA DE AUTENTICAÇÃO
+        function switchAuthTab(tab) {
+            const btnLogin = document.getElementById('tab-btn-login');
+            const btnReg = document.getElementById('tab-btn-register');
+            const btnReset = document.getElementById('tab-btn-reset');
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+            const formReset = document.getElementById('form-reset');
 
-            currentUser = {
-                teamName: teamName,
-                username: username
-            };
+            [btnLogin, btnReg, btnReset].forEach(b => b.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-transparent text-marrom-600 hover:text-marrom-900");
+            [formLogin, formReg, formReset].forEach(f => f.classList.add('hidden'));
+
+            if (tab === 'login') {
+                btnLogin.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700";
+                formLogin.classList.remove('hidden');
+            } else if (tab === 'register') {
+                btnReg.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700";
+                formReg.classList.remove('hidden');
+            } else if (tab === 'reset') {
+                btnReset.className = "flex-1 py-3 text-center text-sm font-bold border-b-2 border-vinho-700 text-vinho-700";
+                formReset.classList.remove('hidden');
+            }
+        }
+
+        // 1. LOGIN
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value;
+
+            const user = registeredUsers.find(u => u.username === username && u.password === password);
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
+                renderUserStatus();
+                alert(`Bem-vindos de volta, ${user.teamName}!`);
+            } else {
+                alert('Usuário ou senha incorretos. Verifique as credenciais ou cadastre o grupo.');
+            }
+        }
+
+        // 2. CADASTRO
+        function handleRegister(e) {
+            e.preventDefault();
+            const teamName = document.getElementById('reg-team-name').value.trim();
+            const username = document.getElementById('reg-username').value.trim();
+            const email = document.getElementById('reg-email').value.trim();
+            const password = document.getElementById('reg-password').value;
+
+            if (registeredUsers.some(u => u.username === username)) {
+                alert('Este nome de usuário já está em uso por outro grupo. Escolha outro.');
+                return;
+            }
+
+            const newUser = { teamName, username, email, password, members: '' };
+            registeredUsers.push(newUser);
+            localStorage.setItem('vozes_registered_users', JSON.stringify(registeredUsers));
+
+            currentUser = newUser;
             localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
             renderUserStatus();
-            alert(`Bem-vindos ao Estúdio, ${teamName}!`);
+            alert(`Grupo '${teamName}' cadastrado com sucesso!`);
+        }
+
+        // 3. REDEFINIR SENHA
+        function handleResetPassword(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('reset-identifier').value.trim();
+            const newPassword = document.getElementById('reset-new-password').value;
+
+            const userIndex = registeredUsers.findIndex(u => u.username === identifier || (u.email && u.email === identifier));
+
+            if (userIndex !== -1) {
+                registeredUsers[userIndex].password = newPassword;
+                localStorage.setItem('vozes_registered_users', JSON.stringify(registeredUsers));
+                alert('Senha redefinida com sucesso! Você já pode entrar com a nova senha.');
+                switchAuthTab('login');
+            } else {
+                alert('Não encontramos nenhuma conta com o e-mail ou usuário informado.');
+            }
         }
 
         function logoutUser() {
@@ -904,9 +1098,35 @@
             navigateTo('home');
         }
 
+        // ATUALIZAR DADOS DO PERFIL
+        function handleUpdateProfile(e) {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const teamName = document.getElementById('profile-team-name').value.trim();
+            const email = document.getElementById('profile-email').value.trim();
+            const members = document.getElementById('profile-members').value.trim();
+
+            currentUser.teamName = teamName;
+            currentUser.email = email;
+            currentUser.members = members;
+
+            // Atualiza array de usuários registrados
+            const idx = registeredUsers.findIndex(u => u.username === currentUser.username);
+            if(idx !== -1) registeredUsers[idx] = currentUser;
+
+            localStorage.setItem('vozes_current_user', JSON.stringify(currentUser));
+            localStorage.setItem('vozes_registered_users', JSON.stringify(registeredUsers));
+
+            renderUserStatus();
+            alert('Perfil do grupo atualizado com sucesso!');
+        }
+
         function renderUserStatus() {
             const container = document.getElementById('user-status-container');
             const authBox = document.getElementById('auth-box');
+            const professoraBanner = document.getElementById('professora-banner');
+            const groupWelcomeBanner = document.getElementById('group-welcome-banner');
             const mainNav = document.getElementById('main-nav-bar');
 
             if (currentUser) {
@@ -914,27 +1134,53 @@
                     <div class="flex items-center space-x-2 bg-vinho-900 border border-vinho-700 px-3 py-1.5 rounded-lg text-xs">
                         <i class="fa-solid fa-users text-dourado-400"></i>
                         <span class="font-bold text-creme-50">${currentUser.teamName}</span>
-                        <button onclick="logoutUser()" title="Sair do Grupo" class="ml-2 text-creme-300 hover:text-red-300">
+                        <button onclick="navigateTo('perfil')" title="Perfil do Grupo" class="ml-1 text-dourado-400 hover:text-white">
+                            <i class="fa-solid fa-gear"></i>
+                        </button>
+                        <button onclick="logoutUser()" title="Sair do Grupo" class="ml-1 text-creme-300 hover:text-red-300">
                             <i class="fa-solid fa-right-from-bracket"></i>
                         </button>
                     </div>
                 `;
                 if(authBox) authBox.classList.add('hidden');
+                if(professoraBanner) professoraBanner.classList.add('hidden'); // Oculta mensagem da professora após login
+                if(groupWelcomeBanner) {
+                    groupWelcomeBanner.classList.remove('hidden');
+                    document.getElementById('welcome-team-name').innerText = `Bem-vindos, ${currentUser.teamName}!`;
+                }
                 if(mainNav) mainNav.classList.remove('hidden');
+
+                // Preencher inputs do perfil
+                document.getElementById('profile-team-name').value = currentUser.teamName || '';
+                document.getElementById('profile-username').value = currentUser.username || '';
+                document.getElementById('profile-email').value = currentUser.email || '';
+                document.getElementById('profile-members').value = currentUser.members || '';
+
+                // Preencher estatísticas do perfil
+                const userScripts = scripts.filter(s => s.team === currentUser.teamName);
+                const userEps = episodes.filter(e => e.user === currentUser.username);
+                const publicEps = userEps.filter(e => e.visibility === 'Público');
+
+                document.getElementById('stat-scripts-count').innerText = userScripts.length;
+                document.getElementById('stat-episodes-count').innerText = userEps.length;
+                document.getElementById('stat-public-count').innerText = publicEps.length;
+
             } else {
                 container.innerHTML = `
                     <button onclick="navigateTo('home')" class="text-xs font-bold text-dourado-400 bg-vinho-800 hover:bg-vinho-700 px-3 py-1.5 rounded-lg border border-vinho-600">
-                        Acessar Grupo
+                        Entrar / Criar Grupo
                     </button>
                 `;
                 if(authBox) authBox.classList.remove('hidden');
+                if(professoraBanner) professoraBanner.classList.remove('hidden'); // Exibe mensagem da professora quando não logado
+                if(groupWelcomeBanner) groupWelcomeBanner.classList.add('hidden');
                 if(mainNav) mainNav.classList.add('hidden');
             }
         }
 
         // NAVEGAÇÃO ENTRE SEÇÕES (SPA)
         function navigateTo(sectionId) {
-            const sections = ['home', 'roteiros', 'estudio', 'biblioteca', 'vitrine', 'revisao', 'guia'];
+            const sections = ['home', 'roteiros', 'estudio', 'biblioteca', 'vitrine', 'revisao', 'guia', 'perfil'];
             sections.forEach(sec => {
                 const el = document.getElementById(`sec-${sec}`);
                 if(el) {
@@ -1036,6 +1282,37 @@
             localStorage.setItem('vozes_scripts', JSON.stringify(scripts));
             document.getElementById('script-saved-badge').classList.remove('hidden');
             populateScriptSelectorInStudio();
+            renderUserStatus();
+        }
+
+        // VISUALIZADOR DE ÁUDIO NO CANVAS
+        function initCanvasVisualizer() {
+            const canvas = document.getElementById('audio-visualizer-canvas');
+            if(!canvas) return;
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+
+            function drawWave() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = '#6E1327';
+                
+                const barWidth = 4;
+                const gap = 2;
+                const bars = Math.floor(canvas.width / (barWidth + gap));
+
+                for (let i = 0; i < bars; i++) {
+                    const barHeight = mediaRecorder && mediaRecorder.state === 'recording' 
+                        ? Math.random() * canvas.height * 0.8 + 5
+                        : 4;
+
+                    const x = i * (barWidth + gap);
+                    const y = (canvas.height - barHeight) / 2;
+                    ctx.fillRect(x, y, barWidth, barHeight);
+                }
+                animFrameId = requestAnimationFrame(drawWave);
+            }
+            drawWave();
         }
 
         // ESTÚDIO DE GRAVAÇÃO COM MEDIA RECORDER
@@ -1091,7 +1368,6 @@
         function stopRecording() {
             if(mediaRecorder && mediaRecorder.state !== 'inactive') {
                 mediaRecorder.stop();
-                // Parar tracks
                 mediaRecorder.stream.getTracks().forEach(track => track.stop());
 
                 clearInterval(recordingTimerInterval);
@@ -1140,6 +1416,7 @@
             clearPreview();
             renderEpisodesList();
             renderPublicShowcase();
+            renderUserStatus();
             navigateTo('biblioteca');
         }
 
@@ -1194,16 +1471,22 @@
             });
         }
 
-        function renderEpisodesList(filteredList = episodes) {
+        function renderEpisodesList(filteredList = null) {
             const container = document.getElementById('episodes-list-container');
             container.innerHTML = '';
 
-            if(filteredList.length === 0) {
-                container.innerHTML = `<div class="col-span-2 text-center py-8 text-marrom-600">Nenhum episódio encontrado.</div>`;
+            // Filtrar apenas episódios do usuário logado se não houver filtro específico
+            let listToRender = filteredList || episodes;
+            if (currentUser && !filteredList) {
+                listToRender = episodes.filter(e => e.user === currentUser.username);
+            }
+
+            if(listToRender.length === 0) {
+                container.innerHTML = `<div class="col-span-2 text-center py-8 text-marrom-600">Nenhum episódio encontrado no projeto desta equipe.</div>`;
                 return;
             }
 
-            filteredList.forEach(ep => {
+            listToRender.forEach(ep => {
                 const isPublic = ep.visibility === 'Público';
                 container.innerHTML += `
                     <div class="bg-white p-5 rounded-2xl border border-marrom-300 shadow-sm space-y-3">
@@ -1234,14 +1517,16 @@
         }
 
         function filterEpisodes(type) {
-            if(type === 'all') renderEpisodesList(episodes);
-            else if(type === 'public') renderEpisodesList(episodes.filter(e => e.visibility === 'Público'));
-            else if(type === 'private') renderEpisodesList(episodes.filter(e => e.visibility === 'Privado'));
+            let baseList = currentUser ? episodes.filter(e => e.user === currentUser.username) : episodes;
+            if(type === 'all') renderEpisodesList(baseList);
+            else if(type === 'public') renderEpisodesList(baseList.filter(e => e.visibility === 'Público'));
+            else if(type === 'private') renderEpisodesList(baseList.filter(e => e.visibility === 'Privado'));
         }
 
         function filterByPlaylist(plName) {
-            if(plName === 'all') renderEpisodesList(episodes);
-            else renderEpisodesList(episodes.filter(e => e.playlist === plName));
+            let baseList = currentUser ? episodes.filter(e => e.user === currentUser.username) : episodes;
+            if(plName === 'all') renderEpisodesList(baseList);
+            else renderEpisodesList(baseList.filter(e => e.playlist === plName));
         }
 
         function toggleVisibility(id) {
@@ -1251,6 +1536,7 @@
                 localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
                 renderEpisodesList();
                 renderPublicShowcase();
+                renderUserStatus();
             }
         }
 
@@ -1260,6 +1546,7 @@
                 localStorage.setItem('vozes_episodes', JSON.stringify(episodes));
                 renderEpisodesList();
                 renderPublicShowcase();
+                renderUserStatus();
             }
         }
 
@@ -1308,13 +1595,22 @@
             alert(`Link do episódio '${title}' copiado para a área de transferência!`);
         }
 
-        // REVISÃO E AUTOAVALIAÇÃO
+        // CHECKLIST E AUTOAVALIAÇÃO
+        function updateChecklistProgress() {
+            const checkboxes = document.querySelectorAll('.chk-item');
+            let checked = 0;
+            checkboxes.forEach(c => { if(c.checked) checked++; });
+            const pct = Math.round((checked / checkboxes.length) * 100);
+            document.getElementById('checklist-progress-text').innerText = `${pct}% Concluído`;
+        }
+
         function saveReflection() {
             const learned = document.getElementById('reflection-learned').value;
             const improve = document.getElementById('reflection-improve').value;
             if(!learned && !improve) return;
 
-            localStorage.setItem('vozes_reflection', JSON.stringify({ learned, improve, date: new Date().toLocaleDateString('pt-BR') }));
+            const reflectionData = { learned, improve, date: new Date().toLocaleDateString('pt-BR') };
+            localStorage.setItem('vozes_reflection', JSON.stringify(reflectionData));
             document.getElementById('reflection-status').classList.remove('hidden');
         }
     </script>
